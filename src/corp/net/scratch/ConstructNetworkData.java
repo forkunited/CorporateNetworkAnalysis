@@ -17,7 +17,7 @@ public class ConstructNetworkData {
 		File outputDir = new File(properties.getNetworkDirPath(), source);
 		File sourceFile = new File(properties.getNetworkSourceDirPath(), source);
 		
-		if (!outputDir.exists() || !outputDir.mkdir()) {
+		if (!outputDir.exists() && !outputDir.mkdir()) {
 			System.out.println("Failed to create output directory: " + outputDir.getAbsolutePath() + "... exiting.");
 			return;
 		}

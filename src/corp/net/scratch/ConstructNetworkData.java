@@ -59,12 +59,14 @@ public class ConstructNetworkData {
 		File outputSourcesFile = new File(outputDir.getAbsolutePath(), "sources");
 		
         try {
+        	System.out.println("Output edge " + edgeKey + ".");
+        	
     		BufferedWriter w = new BufferedWriter(new FileWriter(outputNetFile));
-    		w.write(edgeKey + "\t" + edge);
+    		w.write(edgeKey + "\t" + edge + "\n");
 			w.close();
 			
     		w = new BufferedWriter(new FileWriter(outputSourcesFile));
-    		w.write(edgeKey + "\t" + edgeSources);
+    		w.write(edgeKey + "\t" + edgeSources + "\n");
 			w.close();
 			return true;
         } catch (IOException e) { e.printStackTrace(); return false; }

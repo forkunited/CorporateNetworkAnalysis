@@ -27,7 +27,7 @@ public class ConstructNetworkData {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				String[] lineValues = line.trim().split("\\t");
-				if (lineValues.length < 2)
+				if (lineValues.length < 3)
 					continue;
 				
 				String edgeKey = lineValues[0].trim();
@@ -61,11 +61,11 @@ public class ConstructNetworkData {
         try {
         	System.out.println("Output edge " + edgeKey + ".");
         	
-    		BufferedWriter w = new BufferedWriter(new FileWriter(outputNetFile));
+    		BufferedWriter w = new BufferedWriter(new FileWriter(outputNetFile, true));
     		w.write(edgeKey + "\t" + edge + "\n");
 			w.close();
 			
-    		w = new BufferedWriter(new FileWriter(outputSourcesFile));
+    		w = new BufferedWriter(new FileWriter(outputSourcesFile, true));
     		w.write(edgeKey + "\t" + edgeSources + "\n");
 			w.close();
 			return true;

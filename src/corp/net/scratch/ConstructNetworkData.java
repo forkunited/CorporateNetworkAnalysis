@@ -26,6 +26,7 @@ public class ConstructNetworkData {
 			BufferedReader br = FileUtil.getFileReader(sourceFile.getAbsolutePath());
 			String line = null;
 			while ((line = br.readLine()) != null) {
+				System.out.println("Read edge from input: " + line);
 				String[] lineValues = line.trim().split("\\t");
 				if (lineValues.length < 2)
 					continue;

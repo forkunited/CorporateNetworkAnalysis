@@ -44,6 +44,7 @@ public class SummarizeNetworkData {
 	@SuppressWarnings("rawtypes")
 	private static boolean summarizeDataFromFile(File networkFile, File outputFile) {
 		Set<String> orgs = new HashSet<String>();
+		Set<String> authors = new HashSet<String>();
 		Map<String, Double> relationSums = new TreeMap<String, Double>();
 		int mentionSum = 0;
 		int relationCount = 0;
@@ -77,6 +78,7 @@ public class SummarizeNetworkData {
 					relationSums.put(key, relationSums.get(key) + value);
 				}
 				
+				authors.add(org1);
 				orgs.add(org1);
 				orgs.add(org2);
 				mentionSum +=edgeObj.getInt("count");
@@ -93,6 +95,7 @@ public class SummarizeNetworkData {
     		BufferedWriter w = new BufferedWriter(new FileWriter(outputFile));
     		for (Entry<String, Double> relationSum : relationSums.entrySet())
     			w.write("Relation " +  relationSum.getKey() + "\t" + relationSum.getValue() + "\n");
+    		w.write("Author Total\t" + authors.size() + "\n");
     		w.write("Organization Total\t" + orgs.size() + "\n");
     		w.write("Mention Total\t" + mentionSum + "\n");
     		w.write("Relation Total\t" + relationCount + "\n");

@@ -26,13 +26,12 @@ public class ConstructNetworkData {
 			BufferedReader br = FileUtil.getFileReader(sourceFile.getAbsolutePath());
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				System.out.println("Read edge from input: " + line);
 				String[] lineValues = line.trim().split("\\t");
 				if (lineValues.length < 2)
 					continue;
 				
 				String edgeKey = lineValues[0].trim();
-				String[] edgeKeyParts = edgeKey.split(".");
+				String[] edgeKeyParts = edgeKey.split("\\.");
 				if (edgeKeyParts.length < 3)
 					continue;		
 				

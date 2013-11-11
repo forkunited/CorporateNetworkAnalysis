@@ -114,6 +114,7 @@ public class HConstructCorpRelNetwork {
 						JSONObject mentionValue = new JSONObject();
 						mentionValue.put("source", relationObj);
 						mentionValue.put("isAuthor", false);
+						mentionValue.put("isSelf", false);
 						this.netObj.set(mentionValue.toString());
 						
 						String mentionId = "NODE." + mention;

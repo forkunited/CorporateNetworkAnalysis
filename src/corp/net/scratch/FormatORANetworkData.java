@@ -17,6 +17,7 @@ import ark.util.FileUtil;
 
 import corp.net.util.CorpNetProperties;
 
+/* FIXME: This no longer works after changes to network construction */
 public class FormatORANetworkData {
 	private static class NetworkEdge {
 		private String source;

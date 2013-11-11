@@ -5,6 +5,10 @@ import ark.util.ARKProperties;
 public class CorpNetProperties extends ARKProperties {
 	private String networkSourceDirPath;
 	private String networkDirPath;
+	private String corpMetaDataPath;
+	private String corpMetaDataGazetteerPath;
+	private String bloombergMetaDataPath;
+	private String bloombergMetaDataGazetteerPath;
 	
 	public CorpNetProperties() {
 		// FIXME: Do this differently... environment variables...?
@@ -12,6 +16,10 @@ public class CorpNetProperties extends ARKProperties {
 
 		this.networkSourceDirPath = loadProperty("networkSourceDirPath");
 		this.networkDirPath = loadProperty("networkDirPath");
+		this.corpMetaDataPath = loadProperty("corpMetaDataPath");
+		this.corpMetaDataGazetteerPath = loadProperty("corpMetaDataGazetteerPath");
+		this.bloombergMetaDataPath = loadProperty("bloombergMetaDataPath");
+		this.bloombergMetaDataGazetteerPath = loadProperty("bloombergMetaDataGazetteerPath");
 	}
 	
 	public String getNetworkSourceDirPath() {
@@ -20,5 +28,21 @@ public class CorpNetProperties extends ARKProperties {
 	
 	public String getNetworkDirPath() {
 		return this.networkDirPath;
+	}
+	
+	public String getCorpMetaDataPath() {
+		return this.corpMetaDataPath;
+	}
+	
+	public String getCorpMetaDataGazetteerPath() {
+		return this.corpMetaDataGazetteerPath;
+	}
+	
+	public String getBloombergMetaDataPath() {
+		return this.bloombergMetaDataPath;
+	}
+	
+	public String getBloombergMetaDataGazetteerPath() {
+		return this.bloombergMetaDataGazetteerPath;
 	}
 }

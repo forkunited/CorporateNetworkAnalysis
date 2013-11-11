@@ -334,26 +334,30 @@ public class HConstructCorpRelNetwork {
 			attsObj.put("types", new JSONArray());
 
 			List<String> ids = this.corpMetaDataGazetteer.getIds(node);
-			for (String id : ids) {
-				CorpMetaData.Attributes atts = this.corpMetaData.getAttributesById(id);
-				attsObj.getJSONArray("countries").addAll(atts.getCountries());
-				attsObj.getJSONArray("ciks").addAll(atts.getCiks());
-				attsObj.getJSONArray("industries").addAll(atts.getIndustries());
-				attsObj.getJSONArray("sics").addAll(atts.getSics());
-				attsObj.getJSONArray("tickers").addAll(atts.getTickers());
-				attsObj.getJSONArray("types").addAll(atts.getTypes());
+			if (ids != null) {
+				for (String id : ids) {
+					CorpMetaData.Attributes atts = this.corpMetaData.getAttributesById(id);
+					attsObj.getJSONArray("countries").addAll(atts.getCountries());
+					attsObj.getJSONArray("ciks").addAll(atts.getCiks());
+					attsObj.getJSONArray("industries").addAll(atts.getIndustries());
+					attsObj.getJSONArray("sics").addAll(atts.getSics());
+					attsObj.getJSONArray("tickers").addAll(atts.getTickers());
+					attsObj.getJSONArray("types").addAll(atts.getTypes());
+				}
 			}
 
 			ids = this.bloombergMetaDataGazetteer.getIds(node);
-			for (String id : ids) {
-				CorpMetaData.Attributes atts = this.bloombergMetaData.getAttributesById(id);
-				attsObj.getJSONArray("countries").addAll(atts.getCountries());
-				attsObj.getJSONArray("ciks").addAll(atts.getCiks());
-				attsObj.getJSONArray("industries").addAll(atts.getIndustries());
-				attsObj.getJSONArray("sics").addAll(atts.getSics());
-				attsObj.getJSONArray("tickers").addAll(atts.getTickers());
-				attsObj.getJSONArray("types").addAll(atts.getTypes());
-			}		
+			if (ids != null) {
+				for (String id : ids) {
+					CorpMetaData.Attributes atts = this.bloombergMetaData.getAttributesById(id);
+					attsObj.getJSONArray("countries").addAll(atts.getCountries());
+					attsObj.getJSONArray("ciks").addAll(atts.getCiks());
+					attsObj.getJSONArray("industries").addAll(atts.getIndustries());
+					attsObj.getJSONArray("sics").addAll(atts.getSics());
+					attsObj.getJSONArray("tickers").addAll(atts.getTickers());
+					attsObj.getJSONArray("types").addAll(atts.getTypes());
+				}		
+			}
 			
 			return attsObj;
 		}

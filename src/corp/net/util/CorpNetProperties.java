@@ -9,6 +9,8 @@ public class CorpNetProperties extends ARKProperties {
 	private String corpMetaDataGazetteerPath;
 	private String bloombergMetaDataPath;
 	private String bloombergMetaDataGazetteerPath;
+	private String bloombergCorpTickerGazetteerPath;
+	private String stopWordGazetteerPath;
 	
 	public CorpNetProperties() {
 		// FIXME: Do this differently... environment variables...?
@@ -20,6 +22,8 @@ public class CorpNetProperties extends ARKProperties {
 		this.corpMetaDataGazetteerPath = loadProperty("corpMetaDataGazetteerPath");
 		this.bloombergMetaDataPath = loadProperty("bloombergMetaDataPath");
 		this.bloombergMetaDataGazetteerPath = loadProperty("bloombergMetaDataGazetteerPath");
+		this.bloombergCorpTickerGazetteerPath = loadProperty("bloombergCorpTickerGazetteerPath");
+		this.stopWordGazetteerPath = loadProperty("stopWordGazetteerPath");
 	}
 	
 	public String getNetworkSourceDirPath() {
@@ -44,5 +48,13 @@ public class CorpNetProperties extends ARKProperties {
 	
 	public String getBloombergMetaDataGazetteerPath() {
 		return this.bloombergMetaDataGazetteerPath;
+	}
+	
+	public String getBloombergCorpTickerGazetteerPath() {
+		return this.bloombergCorpTickerGazetteerPath;
+	}
+	
+	public String getStopWordGazetteerPath() {
+		return this.stopWordGazetteerPath;
 	}
 }

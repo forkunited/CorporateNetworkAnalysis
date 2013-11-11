@@ -23,7 +23,6 @@ import org.apache.hadoop.util.GenericOptionsParser;
 import corp.data.CorpMetaData;
 import corp.net.util.CorpNetProperties;
 import corp.util.CorpKeyFn;
-import corp.util.CorpProperties;
 
 import ark.data.Gazetteer;
 import ark.util.StringUtil;
@@ -34,7 +33,7 @@ public class HConstructCorpRelNetwork {
 		private Text netObjId = new Text();
 		private Text netObj = new Text();
 		
-		private CorpProperties properties = new CorpProperties();
+		private CorpNetProperties properties = new CorpNetProperties();
 		private Gazetteer stopWordGazetteer = new Gazetteer("StopWord", this.properties.getStopWordGazetteerPath());
 		private Gazetteer bloombergCorpTickerGazetteer = new Gazetteer("BloombergCorpTickerGazetteer", this.properties.getBloombergCorpTickerGazetteerPath());
 		private StringUtil.StringTransform stopWordCleanFn = StringUtil.getStopWordsCleanFn(this.stopWordGazetteer);

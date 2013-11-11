@@ -270,6 +270,8 @@ public class HConstructCorpRelNetwork {
 			
 			Map<String, Double> inP = new TreeMap<String, Double>();
 			Map<String, Double> outP = new TreeMap<String, Double>();
+			Map<String, Integer> inTypeCounts = new TreeMap<String, Integer>();
+			Map<String, Integer> outTypeCounts = new TreeMap<String, Integer>();
 			int inCount = 0;
 			int outCount = 0;
 			int selfCount = 0;
@@ -291,18 +293,28 @@ public class HConstructCorpRelNetwork {
 				} else if (nodeObj.getBoolean("isAuthor")) {
 					Map<String, Double> p = srcObj.getP();
 					for (Entry<String, Double> pEntry : p.entrySet()) {
-						if (!outP.containsKey(pEntry.getKey()))
+						if (!outP.containsKey(pEntry.getKey())) {
 							outP.put(pEntry.getKey(), 0.0);
+							outTypeCounts.put(pEntry.getKey(), 0);
+						}
 						outP.put(pEntry.getKey(), outP.get(pEntry.getKey()) + pEntry.getValue());
 					}
+					String maxType = srcObj.getMaxType();
+					outTypeCounts.put(maxType, outTypeCounts.get(maxType) + 1);
+					
 					outCount++;
 				} else {
 					Map<String, Double> p = srcObj.getP();
 					for (Entry<String, Double> pEntry : p.entrySet()) {
-						if (!inP.containsKey(pEntry.getKey()))
+						if (!inP.containsKey(pEntry.getKey())) {
 							inP.put(pEntry.getKey(), 0.0);
+							inTypeCounts.put(pEntry.getKey(), 0);
+						}
 						inP.put(pEntry.getKey(), inP.get(pEntry.getKey()) + pEntry.getValue());
 					}
+					String maxType = srcObj.getMaxType();
+					inTypeCounts.put(maxType, inTypeCounts.get(maxType) + 1);
+					
 					inCount++;
 				}
 			}
@@ -310,13 +322,16 @@ public class HConstructCorpRelNetwork {
 			JSONObject aggObj = new JSONObject();
 			JSONObject inPObj = JSONObject.fromObject(inP);
 			JSONObject outPObj = JSONObject.fromObject(outP);
-			
+			JSONObject inTypeCountsObj = JSONObject.fromObject(inTypeCounts);
+			JSONObject outTypeCountsObj = JSONObject.fromObject(outTypeCounts);			
 			
 			aggObj.put("inCount", inCount);
 			aggObj.put("outCount", outCount);
 			aggObj.put("selfCount", selfCount);
 			aggObj.put("inPObj", inPObj);
 			aggObj.put("outPObj", outPObj);
+			aggObj.put("inTypeCountsObj", inTypeCountsObj);
+			aggObj.put("outTypeCountsObj", outTypeCountsObj);
 			aggObj.put("metaData", metaDataObj);
 			
 			byte[] aggStr = aggObj.toString().getBytes();

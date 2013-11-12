@@ -17,7 +17,7 @@ import ark.util.FileUtil;
 
 import corp.net.util.CorpNetProperties;
 
-/* FIXME: This no longer works after changes to network construction */
+/* FIXME: Can remove this after new hadoop version of summary done */
 public class SummarizeNetworkData {
 	public static void main(String[] args) {
 		CorpNetProperties properties = new CorpNetProperties();

@@ -4,79 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
-
-import net.sf.json.JSONObject;
 
 import ark.util.FileUtil;
 
 import corp.net.util.CorpNetProperties;
 
-/* FIXME: This no longer works after changes to network construction */
-public class FormatORANetworkData {
-	private static class NetworkEdge {
-		private String source;
-		private String target;
-		private Map<String, Double> typeValues;
-		private int count;
-
-		public NetworkEdge(String source, String target, Map<String, Double> typeValues, int count) {
-			this.source = source;
-			this.target = target;
-			this.typeValues = typeValues;
-			this.count = count;
-		}
-		
-		public String getSource() {
-			return this.source;
-		}
-		
-		public String getTarget() {
-			return this.target;
-		}
-		
-		public int getCount() {
-			return this.count;
-		}
-		
-		public Map<String, Double> getTypeValues() {
-			return this.typeValues;
-		}
-		
-		@SuppressWarnings("rawtypes")
-		public static NetworkEdge fromString(String str) {
-			String[] strParts = str.split("\\t");
-			if (strParts.length < 2) {
-				return null;
-			}
-			
-			String edgeKey = strParts[0];
-			String[] edgeKeyParts = edgeKey.split("\\.");
-			String org1 = edgeKeyParts[1];
-			String org2 = edgeKeyParts[2];
-			
-			String edgeValue = strParts[1];
-			JSONObject edgeObj = JSONObject.fromObject(edgeValue);
-			JSONObject pObj = edgeObj.getJSONObject("p");
-			int count = edgeObj.getInt("count");
-			Set p = pObj.entrySet();
-			Map<String, Double> typeValues = new TreeMap<String, Double>();
-			for (Object pValueObj : p) {
-				Entry pValue = (Entry)pValueObj;
-				String type = pValue.getKey().toString();
-				double value = Double.parseDouble(pValue.getValue().toString());
-				typeValues.put(type, value);
-			}
-			
-			return new FormatORANetworkData.NetworkEdge(org1, org2, typeValues, count);
-		}
-	}
-	
+public class FormatORANetworkData {	
 	public static void main(String[] args) {
 		CorpNetProperties properties = new CorpNetProperties();
 		String source = args[0];

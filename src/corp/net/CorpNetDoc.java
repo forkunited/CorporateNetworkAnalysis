@@ -8,7 +8,6 @@ import corp.net.util.MathUtil;
 import net.sf.json.JSONObject;
 
 public class CorpNetDoc extends CorpNetObject {
-	private String net;
 	private String document;
 	
 	private Map<String, Double> p;

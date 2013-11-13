@@ -12,7 +12,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class CorpNetEdge extends CorpNetObject {
-	private String net;
 	private String node1;
 	private String node2;
 	
@@ -140,7 +139,7 @@ public class CorpNetEdge extends CorpNetObject {
 	}
 	
 	public static CorpNetEdge fromString(String str) {
-		return fromString(str, true);
+		return fromString(str, false);
 	}
 	
 	public static CorpNetEdge fromString(String str, boolean ignoreSources) {

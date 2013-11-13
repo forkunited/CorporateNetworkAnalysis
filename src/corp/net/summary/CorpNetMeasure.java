@@ -17,8 +17,6 @@ public abstract class CorpNetMeasure {
 			return map((CorpNetEdge)obj);
 		} else if (obj.getType().equals(CorpNetObject.Type.NODE)) {
 			return map((CorpNetNode)obj);
-		} else if (obj.getType().equals(CorpNetObject.Type.SOURCE)) {
-			// Nope
 		}
 		
 		return null;

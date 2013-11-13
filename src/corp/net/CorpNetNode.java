@@ -13,7 +13,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class CorpNetNode extends CorpNetObject {
-	private String net;
 	private String node;
 	
 	private String nonNormalizedName;

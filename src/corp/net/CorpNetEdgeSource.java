@@ -14,7 +14,7 @@ import org.apache.hadoop.io.Text;
 import corp.net.util.JSONUtil;
 import edu.stanford.nlp.util.Pair;
 
-public class CorpNetEdgeSource extends CorpNetObject {
+public class CorpNetEdgeSource {
 	private JSONObject obj;
 	
 	private String author;
@@ -103,10 +103,5 @@ public class CorpNetEdgeSource extends CorpNetObject {
 			}
 		}
 		return maxType;
-	}
-	
-	@Override
-	public Type getType() {
-		return CorpNetObject.Type.SOURCE;
 	}
 }

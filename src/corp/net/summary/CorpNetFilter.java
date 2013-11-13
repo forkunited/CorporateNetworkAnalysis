@@ -15,8 +15,6 @@ public abstract class CorpNetFilter {
 			return filterEdge((CorpNetEdge)obj);
 		} else if (obj.getType().equals(CorpNetObject.Type.NODE)) {
 			return filterNode((CorpNetNode)obj);
-		} else if (obj.getType().equals(CorpNetObject.Type.SOURCE)) {
-			// Nope
 		}
 		
 		return null;

@@ -4,14 +4,17 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
 import ark.util.FileUtil;
 
+import corp.net.CorpNetEdge;
+import corp.net.CorpNetNode;
 import corp.net.util.CorpNetProperties;
 
-public class FormatORANetworkData {	
+public class FormatORACorpNet {	
 	public static void main(String[] args) {
 		CorpNetProperties properties = new CorpNetProperties();
 		String source = args[0];
@@ -27,21 +30,22 @@ public class FormatORANetworkData {
 			if (!networkDir.isDirectory())
 				continue;
 			String networkName = networkDir.getName();
-			File networkFile = new File(networkDir.getAbsolutePath(), "net");
-			File outputFile = new File(networkDir.getAbsolutePath(), "ora_" + networkDir.getParentFile().getName() + "_" + networkName);
-			if (!convertToORA(networkFile, outputFile, networkName)) {
-				System.out.println("Failed to summarize " + networkFile.getAbsolutePath() + ".");
+			File outputFile = new File(networkDir.getAbsolutePath(), "ORA_" + networkDir.getParentFile().getName() + "_" + networkName);
+			if (!convertToORA(networkDir, outputFile, networkName)) {
+				System.out.println("Failed to summarize network " + networkName + ".");
 				return;
 			}
 		}
 	}
 	
-	private static boolean convertToORA(File inputFile, File outputFile, String networkName) {
+	private static boolean convertToORA(File inputDir, File outputFile, String networkName) {
+		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
+		File inputEdgesFile = new File(inputDir.getAbsolutePath(), "EDGES");
+		
         try {
     		BufferedWriter w = new BufferedWriter(new FileWriter(outputFile));
-    		Set<String> organizations = new TreeSet<String>();
     		Set<String> edgeTypes = new TreeSet<String>();
-    		if (!getOrgsAndEdgeTypes(inputFile, organizations, edgeTypes)) {
+    		if (!getEdgeTypes(inputEdgesFile, edgeTypes)) {
     			w.close();
     			return false;
     		}
@@ -51,9 +55,14 @@ public class FormatORANetworkData {
     	    w.write("\t\t<nodes>\n");
     	    w.write("\t\t\t<nodeset type=\"organization\" id=\"organization\">\n");
     	    
-    	    for (String organization : organizations) {
-    	    	w.write("\t\t\t\t<node id=\"" + organization + "\" />\n");
-    	    }
+			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				CorpNetNode node = CorpNetNode.fromString(line);
+				w.write("\t\t\t\t<node id=\"" + node.getNode() + "\" />\n");
+			}
+			
+			br.close();
     	    
     		w.write("\t\t\t</nodeset>\n");
     		w.write("\t\t</nodes>\n");
@@ -62,18 +71,22 @@ public class FormatORANetworkData {
     		for (String edgeType : edgeTypes) {
 	    		w.write("\t\t\t<graph sourceType=\"organization\" targetType=\"organization\" id=\"" + edgeType + "\">\n");
 	    		
-				BufferedReader br = FileUtil.getFileReader(inputFile.getAbsolutePath());
-				String line = null;
+				br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
+				line = null;
 				while ((line = br.readLine()) != null) {
-					NetworkEdge edge = NetworkEdge.fromString(line);
-					if (edge == null)
-						continue;
-					if (!edge.getTypeValues().containsKey(edgeType))
-						continue;
-					w.write("\t\t\t\t<edge source=\"" + edge.getSource() + 
-							"\" target=\"" + edge.getTarget() + 
-							"\" type=\"double\" value=\"" + edge.getTypeValues().get(edgeType) + 
-							"\" />\n");	
+					CorpNetEdge edge = CorpNetEdge.fromString(line);
+					
+					if (edge.getForwardP().containsKey(edgeType))
+						w.write("\t\t\t\t<edge source=\"" + edge.getNode1() + 
+								"\" target=\"" + edge.getNode2() + 
+								"\" type=\"double\" value=\"" + edge.getForwardP().get(edgeType) + 
+								"\" />\n");	
+					
+					if (edge.getBackwardP().containsKey(edgeType))
+						w.write("\t\t\t\t<edge source=\"" + edge.getNode2() + 
+								"\" target=\"" + edge.getNode1() + 
+								"\" type=\"double\" value=\"" + edge.getBackwardP().get(edgeType) + 
+								"\" />\n");	
 				}
 				
 				br.close();
@@ -82,15 +95,18 @@ public class FormatORANetworkData {
     		}
     		
     		w.write("\t\t\t<graph sourceType=\"organization\" targetType=\"organization\" id=\"Mention\">\n");
-			BufferedReader br = FileUtil.getFileReader(inputFile.getAbsolutePath());
-			String line = null;
+			br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
+			line = null;
 			while ((line = br.readLine()) != null) {
-				NetworkEdge edge = NetworkEdge.fromString(line);
-				if (edge == null)
-					continue;
-				w.write("\t\t\t\t<edge source=\"" + edge.getSource() + 
-						"\" target=\"" + edge.getTarget() + 
-						"\" type=\"double\" value=\"" + edge.getCount() + 
+				CorpNetEdge edge = CorpNetEdge.fromString(line);
+				
+				w.write("\t\t\t\t<edge source=\"" + edge.getNode1() + 
+						"\" target=\"" + edge.getNode2() + 
+						"\" type=\"double\" value=\"" + edge.getForwardCount() + 
+						"\"/>\n");	
+				w.write("\t\t\t\t<edge source=\"" + edge.getNode2() + 
+						"\" target=\"" + edge.getNode1() + 
+						"\" type=\"double\" value=\"" + edge.getBackwardCount() + 
 						"\"/>\n");	
 			}
 			
@@ -106,17 +122,14 @@ public class FormatORANetworkData {
         } catch (IOException e) { e.printStackTrace(); return false; }
 	}
 	
-	private static boolean getOrgsAndEdgeTypes(File inputFile, Set<String> organizations, Set<String> edgeTypes) {
+	private static boolean getEdgeTypes(File inputEdgesFile, Set<String> edgeTypes) {
 		try {
-			BufferedReader br = FileUtil.getFileReader(inputFile.getAbsolutePath());
+			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				NetworkEdge edge = NetworkEdge.fromString(line);
-				if (edge == null)
-					return false;
-				organizations.add(edge.getSource());
-				organizations.add(edge.getTarget());
-				edgeTypes.addAll(edge.getTypeValues().keySet());
+				CorpNetEdge edge = CorpNetEdge.fromString(line);
+				edgeTypes.addAll(edge.getForwardP().keySet());
+				edgeTypes.addAll(edge.getBackwardP().keySet());
 			}
 			
 			br.close();

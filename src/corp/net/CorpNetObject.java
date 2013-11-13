@@ -4,8 +4,13 @@ public abstract class CorpNetObject {
 	public enum Type {
 		NODE,
 		EDGE,
-		DOC,
-		SOURCE
+		DOC
+	}
+	
+	protected String net;
+	
+	public String getNet() {
+		return this.net;
 	}
 	
 	public abstract Type getType();
@@ -26,9 +31,7 @@ public abstract class CorpNetObject {
 			return CorpNetEdge.fromString(str);
 		} else if (type.equals(CorpNetObject.Type.NODE)) {
 			return CorpNetNode.fromString(str);
-		} else if (type.equals(CorpNetObject.Type.SOURCE)) {
-			return CorpNetEdgeSource.fromString(str);
-		}
+		} 
 		
 		return null;
 	}

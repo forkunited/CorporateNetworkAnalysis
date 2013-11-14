@@ -87,6 +87,13 @@ public class CorpNetEdge extends CorpNetObject {
 		return this.backwardCount;
 	}
 	
+	public String getAggregateType() {
+		Map<String, Double> aggP = new TreeMap<String, Double>();
+		MathUtil.accumulateDistribution(aggP, this.forwardP);
+		MathUtil.accumulateDistribution(aggP, this.backwardP);
+		return MathUtil.argMaxDistribution(aggP);
+	}
+	
 	public void accumulateForwardP(String key, double p) {
 		if (!this.forwardP.containsKey(key))
 			this.forwardP.put(key, 0.0);

@@ -25,11 +25,24 @@ public abstract class CorpNetMeasure {
 	public abstract Map<String, Double> map(CorpNetEdge edge);
 	public abstract Map<String, Double> map(CorpNetDoc doc);
 	public abstract Map<String, Double> map(CorpNetNode node);
-	public abstract double reduce(Iterable<DoubleWritable> values);
+	public abstract Double reduce(Iterable<DoubleWritable> values);
 	public abstract String getName();
 	
 	public static CorpNetMeasure fromString(String str) {
-		/* FIXME */
-		return null;
+		if (str.equals("DegreeIn")) {
+			return new CorpNetMeasureDegreeIn();
+		} else if (str.equals("DegreeOut")) {
+			return new CorpNetMeasureDegreeOut();
+		} else if (str.equals("DegreeReturn")) {
+			return new CorpNetMeasureDegreeReturn();
+		} else if (str.equals("DegreeTotal")) {
+			return new CorpNetMeasureDegreeTotal();
+		} else if (str.equals("MentionCount")) {
+			return new CorpNetMeasureMentionCount();
+		} else if (str.equals("PSum")) {
+			return new CorpNetMeasurePSum();
+		} else {
+			return null;
+		}
 	}
 }

@@ -3,7 +3,6 @@ package corp.net;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import net.sf.json.JSONArray;
@@ -12,6 +11,7 @@ import net.sf.json.JSONObject;
 import org.apache.hadoop.io.Text;
 
 import corp.net.util.JSONUtil;
+import corp.net.util.MathUtil;
 import edu.stanford.nlp.util.Pair;
 
 public class CorpNetEdgeSource {
@@ -94,14 +94,6 @@ public class CorpNetEdgeSource {
 	}
 	
 	public String getMaxType() {
-		String maxType = null;
-		double max = 0;
-		for (Entry<String, Double> entry : this.p.entrySet()) {
-			if (entry.getValue() > max) {
-				max = entry.getValue();
-				maxType = entry.getKey();
-			}
-		}
-		return maxType;
+		return MathUtil.argMaxDistribution(this.p);
 	}
 }

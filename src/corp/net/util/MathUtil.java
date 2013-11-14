@@ -19,4 +19,16 @@ public class MathUtil {
 			histogram.put(entry.getKey(), histogram.get(entry.getKey()) + entry.getValue());
 		}
 	}
+	
+	public static String argMaxDistribution(Map<String, Double> distribution) {
+		String maxArg = null;
+		double max = 0;
+		for (Entry<String, Double> entry : distribution.entrySet()) {
+			if (entry.getValue() > max) {
+				max = entry.getValue();
+				maxArg = entry.getKey();
+			}
+		}
+		return maxArg;
+	}
 }

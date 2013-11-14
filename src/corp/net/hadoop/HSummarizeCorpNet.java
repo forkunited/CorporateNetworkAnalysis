@@ -19,21 +19,49 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 import corp.net.CorpNetObject;
 import corp.net.summary.CorpNetFilter;
+import corp.net.summary.CorpNetFilterNet;
 import corp.net.summary.CorpNetMeasure;
+import corp.net.summary.CorpNetMeasureDegreeIn;
+import corp.net.summary.CorpNetMeasureDegreeOut;
+import corp.net.summary.CorpNetMeasureDegreeReturn;
+import corp.net.summary.CorpNetMeasureDegreeTotal;
+import corp.net.summary.CorpNetMeasureMentionCount;
+import corp.net.summary.CorpNetMeasurePSum;
 
 public class HSummarizeCorpNet {	
 	private static List<CorpNetFilter> initFilters() {
 		List<CorpNetFilter> filters = new ArrayList<CorpNetFilter>();
 		
-		/* FIXME */
+		filters.add(new CorpNetFilterNet("FULL"));
+		filters.add(new CorpNetFilterNet("1994"));
+		filters.add(new CorpNetFilterNet("1995"));
+		filters.add(new CorpNetFilterNet("1996"));
+		filters.add(new CorpNetFilterNet("1997"));
+		filters.add(new CorpNetFilterNet("1998"));
+		filters.add(new CorpNetFilterNet("1999"));
+		filters.add(new CorpNetFilterNet("2000"));
+		filters.add(new CorpNetFilterNet("2001"));
+		filters.add(new CorpNetFilterNet("2002"));
+		filters.add(new CorpNetFilterNet("2003"));
+		filters.add(new CorpNetFilterNet("2004"));
+		filters.add(new CorpNetFilterNet("2005"));
+		filters.add(new CorpNetFilterNet("2006"));
+		filters.add(new CorpNetFilterNet("2007"));
+		filters.add(new CorpNetFilterNet("2008"));
+		filters.add(new CorpNetFilterNet("2009"));
+		filters.add(new CorpNetFilterNet("2010"));
 		
 		return filters;
 	}
 		
 	private static List<CorpNetMeasure> initMeasures() {
 		List<CorpNetMeasure> measures = new ArrayList<CorpNetMeasure>();
-		
-		/* FIXME */
+		measures.add(new CorpNetMeasureDegreeIn());
+		measures.add(new CorpNetMeasureDegreeOut());
+		measures.add(new CorpNetMeasureDegreeReturn());
+		measures.add(new CorpNetMeasureDegreeTotal());
+		measures.add(new CorpNetMeasureMentionCount());
+		measures.add(new CorpNetMeasurePSum());
 		
 		return measures;
 	}
@@ -64,18 +92,17 @@ public class HSummarizeCorpNet {
 			CorpNetObject netObj = CorpNetObject.fromString(serializedObj);
 			
 			for (CorpNetFilter filter :  filters) {
-				List<String> filterStrs = filter.filterObject(netObj);
-				if (filterStrs == null)
+				if (!filter.filterObject(netObj))
 					continue;
 				for (CorpNetMeasure measure : measures) {
 					Map<String, Double> measureValues = measure.map(netObj);
-					for (String filterStr : filterStrs) {
-						for (Entry<String, Double> measureEntry : measureValues.entrySet()) {
-							this.key.set(filter.getName() + "." + filterStr + "." + measure.getName() + "." + measureEntry.getKey());
-							this.value.set(measureEntry.getValue());
-							context.write(this.key, this.value);
-						}
-					}	
+					if (measureValues == null)
+						continue;
+					for (Entry<String, Double> measureEntry : measureValues.entrySet()) {
+						this.key.set(filter.toString() + "." + measure.getName() + "." + measureEntry.getKey());
+						this.value.set(measureEntry.getValue());
+						context.write(this.key, this.value);
+					}
 				}
 			}
 		}
@@ -89,8 +116,11 @@ public class HSummarizeCorpNet {
 			String[] keyParts = keyStr.split("\\.");
 			String measureName = keyParts[2];
 			CorpNetMeasure measure = CorpNetMeasure.fromString(measureName);
-			this.value.set(measure.reduce(values));
-			context.write(key, this.value);
+			Double reduceValue = measure.reduce(values);
+			if (reduceValue != null) {
+				this.value.set(reduceValue);
+				context.write(key, this.value);
+			}
 		}
 
 	}

@@ -70,19 +70,6 @@ public class HSummarizeCorpNet {
 	public static class HSummarizeCorpNetMapper extends Mapper<Object, Text, Text, DoubleWritable> {
 		private Text key = new Text();
 		private DoubleWritable value = new DoubleWritable();
-		
-		public void run(Context context) throws InterruptedException {
-			try {
-				setup(context);
-				while (context.nextKeyValue()) {
-					map(context.getCurrentKey(), context.getCurrentValue(),
-							context);
-				}
-				cleanup(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 			List<CorpNetFilter> filters = initFilters();

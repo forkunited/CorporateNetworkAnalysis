@@ -81,6 +81,13 @@ public class CorpNetNode extends CorpNetObject {
 		JSONArray metaDataTickersObj = new JSONArray();
 		JSONArray metaDataTypesObj = new JSONArray();
 		
+		metaDataCountriesObj.addAll(this.metaDataCountries);
+		metaDataCiksObj.addAll(this.metaDataCiks);
+		metaDataIndustriesObj.addAll(this.metaDataIndustries);
+		metaDataSicsObj.addAll(this.metaDataSics);
+		metaDataTickersObj.addAll(this.metaDataTickers);
+		metaDataTypesObj.addAll(this.metaDataTypes);
+		
 		JSONObject metaDataObj = new JSONObject();
 		metaDataObj.put("countries", metaDataCountriesObj);
 		metaDataObj.put("ciks", metaDataCiksObj);

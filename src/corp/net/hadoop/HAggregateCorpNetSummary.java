@@ -65,7 +65,7 @@ public class HAggregateCorpNetSummary {
 		job.setMapperClass(HAggregateCorpNetSummaryMapper.class);
 		job.setReducerClass(HAggregateCorpNetSummaryReducer.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputValueClass(DoubleWritable.class);
 		FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
 		FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);

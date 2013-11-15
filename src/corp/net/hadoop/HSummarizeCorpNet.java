@@ -101,7 +101,7 @@ public class HSummarizeCorpNet {
 		public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
 			String keyStr = key.toString();
 			String[] keyParts = keyStr.split("\\.");
-			String measureName = keyParts[2];
+			String measureName = keyParts[1];
 			CorpNetMeasure measure = CorpNetMeasure.fromString(measureName);
 			Double reduceValue = measure.reduce(values);
 			if (reduceValue != null) {

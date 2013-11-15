@@ -27,7 +27,7 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 		for (Entry<String, Integer> entry : mentionTypes.entrySet()) {
 			values.put(entry.getKey() + "/" + doc.getDocument(), (double)entry.getValue());
 		}
-		values.put("ALL/" + doc.getDocument(), (double)doc.getMentionCount());
+		values.put("DOC/ALL/" + doc.getDocument(), (double)doc.getMentionCount());
 		return values;
 	}
 
@@ -37,21 +37,21 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 		
 		Map<String, Integer> inTypes = node.getInTypeCounts();
 		for (Entry<String, Integer> entry : inTypes.entrySet()) {
-			values.put("IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("IN/ALL/" + node.getNode(), (double)node.getInCount());
+		values.put("NODE/IN/ALL/" + node.getNode(), (double)node.getInCount());
 		
 		Map<String, Integer> outTypes = node.getOutTypeCounts();
 		for (Entry<String, Integer> entry : outTypes.entrySet()) {
-			values.put("OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("OUT/ALL/" + node.getNode(), (double)node.getOutCount());
+		values.put("NODE/OUT/ALL/" + node.getNode(), (double)node.getOutCount());
 		
 		Map<String, Integer> selfTypes = node.getSelfTypeCounts();
 		for (Entry<String, Integer> entry : selfTypes.entrySet()) {
-			values.put("SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("SELF/ALL/" + node.getNode(), (double)node.getSelfCount());
+		values.put("NODE/SELF/ALL/" + node.getNode(), (double)node.getSelfCount());
 		
 		return values;
 	}

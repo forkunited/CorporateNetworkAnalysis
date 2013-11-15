@@ -25,7 +25,7 @@ public class CorpNetMeasurePSum  extends CorpNetMeasure {
 		Map<String, Double> p = doc.getP();
 		Map<String, Double> values = new HashMap<String, Double>(p.size());
 		for (Entry<String, Double> entry : p.entrySet()) {
-			values.put(entry.getKey() + "/" + doc.getDocument(), (double)entry.getValue());
+			values.put("DOC/" + entry.getKey() + "/" + doc.getDocument(), (double)entry.getValue());
 		}
 		return values;
 	}
@@ -36,17 +36,17 @@ public class CorpNetMeasurePSum  extends CorpNetMeasure {
 		
 		Map<String, Double> inP = node.getInP();
 		for (Entry<String, Double> entry : inP.entrySet()) {
-			values.put("IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
 		
 		Map<String, Double> outP = node.getOutP();
 		for (Entry<String, Double> entry : outP.entrySet()) {
-			values.put("OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
 		
 		Map<String, Double> selfP = node.getSelfP();
 		for (Entry<String, Double> entry : selfP.entrySet()) {
-			values.put("SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+			values.put("NODE/SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
 		
 		return values;

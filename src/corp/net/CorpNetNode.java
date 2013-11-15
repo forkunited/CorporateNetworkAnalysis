@@ -104,10 +104,6 @@ public class CorpNetNode extends CorpNetObject {
 		return obj;
 	}
 	
-	public String getNet() {
-		return this.net;
-	}
-	
 	public String getNode() {
 		return this.node;
 	}

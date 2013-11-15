@@ -30,10 +30,6 @@ public class CorpNetDoc extends CorpNetObject {
 		return aggObj;
 	}
 	
-	public String getNet() {
-		return this.net;
-	}
-	
 	public String getDocument() {
 		return this.document;
 	}

@@ -59,10 +59,6 @@ public class CorpNetEdge extends CorpNetObject {
 		return sourcesObj;
 	}
 	
-	public String getNet() {
-		return this.net;
-	}
-	
 	public String getNode1() {
 		return this.node1;
 	}

@@ -25,9 +25,9 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 		Map<String, Integer> mentionTypes = doc.getTypeCounts();
 		Map<String, Double> values = new HashMap<String, Double>(mentionTypes.size() + 1);
 		for (Entry<String, Integer> entry : mentionTypes.entrySet()) {
-			values.put(entry.getKey() + "_" + doc.getDocument(), (double)entry.getValue());
+			values.put(entry.getKey() + "/" + doc.getDocument(), (double)entry.getValue());
 		}
-		values.put("ALL_" + doc.getDocument(), (double)doc.getMentionCount());
+		values.put("ALL/" + doc.getDocument(), (double)doc.getMentionCount());
 		return values;
 	}
 
@@ -37,21 +37,21 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 		
 		Map<String, Integer> inTypes = node.getInTypeCounts();
 		for (Entry<String, Integer> entry : inTypes.entrySet()) {
-			values.put("IN_" + entry.getKey() + "_" + node.getNode(), (double)entry.getValue());
+			values.put("IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("IN_ALL_" + node.getNode(), (double)node.getInCount());
+		values.put("IN/ALL/" + node.getNode(), (double)node.getInCount());
 		
 		Map<String, Integer> outTypes = node.getOutTypeCounts();
 		for (Entry<String, Integer> entry : outTypes.entrySet()) {
-			values.put("OUT_" + entry.getKey() + "_" + node.getNode(), (double)entry.getValue());
+			values.put("OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("OUT_ALL_" + node.getNode(), (double)node.getOutCount());
+		values.put("OUT/ALL/" + node.getNode(), (double)node.getOutCount());
 		
 		Map<String, Integer> selfTypes = node.getSelfTypeCounts();
 		for (Entry<String, Integer> entry : selfTypes.entrySet()) {
-			values.put("SELF_" + entry.getKey() + "_" + node.getNode(), (double)entry.getValue());
+			values.put("SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
 		}
-		values.put("SELF_ALL_" + node.getNode(), (double)node.getSelfCount());
+		values.put("SELF/ALL/" + node.getNode(), (double)node.getSelfCount());
 		
 		return values;
 	}
@@ -66,7 +66,7 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 
 	@Override
 	public String getName() {
-		return "MentionCount";
+		return "MENTION_COUNT";
 	}
 
 }

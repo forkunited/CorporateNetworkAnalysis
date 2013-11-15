@@ -29,17 +29,17 @@ public abstract class CorpNetMeasure {
 	public abstract String getName();
 	
 	public static CorpNetMeasure fromString(String str) {
-		if (str.equals("DegreeIn")) {
+		if (str.equals("DEGREE_IN")) {
 			return new CorpNetMeasureDegreeIn();
-		} else if (str.equals("DegreeOut")) {
+		} else if (str.equals("DEGREE_OUT")) {
 			return new CorpNetMeasureDegreeOut();
-		} else if (str.equals("DegreeReturn")) {
+		} else if (str.equals("DEGREE_RETURN")) {
 			return new CorpNetMeasureDegreeReturn();
-		} else if (str.equals("DegreeTotal")) {
+		} else if (str.equals("DEGREE_TOTAL")) {
 			return new CorpNetMeasureDegreeTotal();
-		} else if (str.equals("MentionCount")) {
+		} else if (str.equals("MENTION_COUNT")) {
 			return new CorpNetMeasureMentionCount();
-		} else if (str.equals("PSum")) {
+		} else if (str.equals("P_SUM")) {
 			return new CorpNetMeasurePSum();
 		} else {
 			return null;

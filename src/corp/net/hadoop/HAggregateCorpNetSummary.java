@@ -22,21 +22,21 @@ public class HAggregateCorpNetSummary {
 			String[] valueParts = value.toString().split("\t");
 			
 			String inputKey = valueParts[0];
-			int outputKeyEndIndex = inputKey.lastIndexOf("_");
+			int outputKeyEndIndex = inputKey.lastIndexOf("/");
 			String outputKey = inputKey.substring(0, outputKeyEndIndex);
 			
 			double inputValue = Double.valueOf(valueParts[1]);
 			int histogramValue = (int)Math.floor(inputValue);
 			
-			this.key.set("HISTOGRAM_" + outputKey + "_" + histogramValue);
+			this.key.set("HISTOGRAM/" + outputKey + "/" + histogramValue);
 			this.value.set(1.0);
 			context.write(this.key, this.value);
 
-			this.key.set("SUM_" + outputKey);
+			this.key.set("SUM/" + outputKey);
 			this.value.set(inputValue);
 			context.write(this.key, this.value);
 			
-			this.key.set("COUNT_" + outputKey);
+			this.key.set("COUNT/" + outputKey);
 			this.value.set(1.0);
 			context.write(this.key, this.value);
 		}

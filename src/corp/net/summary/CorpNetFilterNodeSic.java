@@ -28,7 +28,7 @@ public class CorpNetFilterNodeSic extends CorpNetFilter {
 
 	@Override
 	public String toString() {
-		return "NodeSic_" + this.sic;
+		return "NODE_SIC/" + this.sic;
 	}
 
 }

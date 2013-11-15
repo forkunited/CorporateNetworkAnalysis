@@ -16,14 +16,14 @@ public class CorpNetMeasureDegreeIn extends CorpNetMeasureDegree {
 		Map<String, Double> values = new HashMap<String, Double>(2);
 		if (edge.getForwardCount() > 0) {
 			String edgeType = MathUtil.argMaxDistribution(edge.getForwardP());
-			values.put("ALL_" + edge.getNode2(), 1.0);
-			values.put(edgeType + "_" + edge.getNode2(), 1.0);
+			values.put("ALL/" + edge.getNode2(), 1.0);
+			values.put(edgeType + "/" + edge.getNode2(), 1.0);
 		}
 		
 		if (edge.getBackwardCount() > 0) {
 			String edgeType = MathUtil.argMaxDistribution(edge.getBackwardP());
-			values.put("ALL_" + edge.getNode1(), 1.0);
-			values.put(edgeType + "_" + edge.getNode1(), 1.0);
+			values.put("ALL/" + edge.getNode1(), 1.0);
+			values.put(edgeType + "/" + edge.getNode1(), 1.0);
 		}
 		
 		return values;
@@ -31,7 +31,7 @@ public class CorpNetMeasureDegreeIn extends CorpNetMeasureDegree {
 
 	@Override
 	public String getName() {
-		return "DegreeIn";
+		return "DEGREE_IN";
 	}
 
 }

@@ -28,8 +28,8 @@ public abstract class CorpNetMeasureDegree extends CorpNetMeasure {
 	public Map<String, Double> map(CorpNetNode node) {
 		Map<String, Double> values = new HashMap<String, Double>(node.getInP().size() + 1);
 		for (String edgeType : node.getInP().keySet())
-			values.put(edgeType + "_" + node.getNode(), -1.0);
-		values.put("ALL_" + node.getNode(), -1.0);
+			values.put(edgeType + "/" + node.getNode(), -1.0);
+		values.put("ALL/" + node.getNode(), -1.0);
 		return values;
 	}
 

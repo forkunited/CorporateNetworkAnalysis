@@ -28,6 +28,6 @@ public class CorpNetFilterNet extends CorpNetFilter {
 	
 	@Override
 	public String toString() {
-		return "Net_" + this.net;
+		return "NET/" + this.net;
 	}
 }

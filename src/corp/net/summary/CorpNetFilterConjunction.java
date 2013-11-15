@@ -47,7 +47,7 @@ public class CorpNetFilterConjunction extends CorpNetFilter {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str = str.append("Conjunction_");
+		str = str.append("CONJUNCTION/");
 		for (CorpNetFilter filter : this.filters)
 			str = str.append(filter.toString()).append("^");
 		str = str.delete(str.length()-1, str.length());

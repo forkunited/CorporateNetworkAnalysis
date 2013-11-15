@@ -13,9 +13,10 @@ public class SplitCorpNetSummary {
 	private static CorpNetProperties properties = new CorpNetProperties();
 	
 	public static void main(String[] args) {
-		String source = args[0];
+		/*String source = args[0];
 		File outputDir = new File(properties.getNetworkDirPath(), source);
 		File summarySourceFile = new File(properties.getNetworkSourceDirPath(), source + "_Summary");
+		File summaryAggregationSourceFile = new File(properties.getNetworkSourceDirPath(), source + "_SummaryAggregation");
 		
 		if (!outputDir.exists() && !outputDir.mkdir()) {
 			System.out.println("Failed to create output directory: " + outputDir.getAbsolutePath() + "... exiting.");
@@ -35,6 +36,6 @@ public class SplitCorpNetSummary {
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}*/	
 	}
 }

@@ -132,7 +132,7 @@ public class CorpNetEdge extends CorpNetObject {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str = str.append(this.net).append(".")
+		str = str.append(this.net).append(".EDGE.")
 				 .append(this.node1).append(".")
 				 .append(this.node2).append("\t")
 				 .append(getJSONAggregate().toString()).append("\t")
@@ -157,10 +157,10 @@ public class CorpNetEdge extends CorpNetObject {
 		CorpNetEdge edge = new CorpNetEdge(net, node1, node2);
 		
 		JSONObject aggObj = JSONObject.fromObject(aggStr);
-		edge.forwardP = JSONUtil.objToDistribution(aggObj.getJSONObject("forwardP"));
-		edge.backwardP = JSONUtil.objToDistribution(aggObj.getJSONObject("backwardP"));
-		edge.forwardCount = aggObj.getInt("forwardCount");
-		edge.backwardCount = aggObj.getInt("backwardCount");
+		edge.forwardP = JSONUtil.objToDistribution(aggObj.getJSONObject("forward").getJSONObject("p"));
+		edge.backwardP = JSONUtil.objToDistribution(aggObj.getJSONObject("backward").getJSONObject("p"));
+		edge.forwardCount = aggObj.getJSONObject("forward").getInt("count");
+		edge.backwardCount = aggObj.getJSONObject("backward").getInt("count");
 		
 		if (strParts.length > 2 && !ignoreSources) {
 			JSONArray sourcesObj = JSONArray.fromObject(strParts[2]);

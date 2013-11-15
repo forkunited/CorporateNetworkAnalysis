@@ -250,7 +250,7 @@ public class CorpNetNode extends CorpNetObject {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str = str.append(this.net).append(".")
+		str = str.append(this.net).append(".NODE.")
 				 .append(this.node).append("\t")
 				 .append(getJSONAggregate().toString());
 		

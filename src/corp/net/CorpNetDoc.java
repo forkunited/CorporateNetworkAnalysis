@@ -72,7 +72,7 @@ public class CorpNetDoc extends CorpNetObject {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str = str.append(this.net).append(".")
+		str = str.append(this.net).append(".DOC.")
 				 .append(this.document).append("\t")
 				 .append(getJSONAggregate().toString());
 		

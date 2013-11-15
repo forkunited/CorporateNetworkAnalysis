@@ -80,7 +80,7 @@ public class HSummarizeCorpNet {
 				}
 				cleanup(context);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 

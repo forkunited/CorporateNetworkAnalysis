@@ -51,7 +51,7 @@ public class HConstructCorpNet {
 				}
 				cleanup(context);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 

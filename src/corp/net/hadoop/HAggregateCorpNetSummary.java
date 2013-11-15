@@ -27,7 +27,7 @@ public class HAggregateCorpNetSummary {
 				}
 				cleanup(context);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 

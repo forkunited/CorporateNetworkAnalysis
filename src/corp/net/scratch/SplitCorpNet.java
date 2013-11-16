@@ -26,7 +26,14 @@ public class SplitCorpNet {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				CorpNetObject netObj = CorpNetObject.fromString(line);
-				File outputFile = new File(outputDir.getAbsoluteFile(), netObj.getNet() + "/" + netObj.getType());
+				
+				File netOutputDir = new File(outputDir.getAbsoluteFile(), netObj.getNet());
+				if (!netOutputDir.exists() && netOutputDir.mkdir()) {
+					System.out.println("Failed to create output directory: " + netOutputDir.getAbsolutePath() + "... exiting.");
+					return;
+				}
+				
+				File outputFile = new File(netOutputDir.getAbsoluteFile(), netObj.getType().toString());
 				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
 				w.write(line + "\n");
 				w.close();

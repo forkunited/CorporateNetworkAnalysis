@@ -28,7 +28,7 @@ public class HRotateCorpNetSummary {
 			CorpNetSummaryEntry inputEntry = CorpNetSummaryEntry.fromString(value.toString());
 
 			CorpNetSummaryEntry outputEntry = inputEntry.clone();
-			outputEntry.setMeasureSubType("");
+			outputEntry.setMeasureSubType(" ");
 			
 			JSONObject outputValue = new JSONObject();
 			outputValue.put(inputEntry.getMeasureSubType(), inputEntry.getValue());

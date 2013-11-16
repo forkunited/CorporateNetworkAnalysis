@@ -33,8 +33,8 @@ public class CorpNetSummaryEntry {
 		
 		if (this.aggType != AggregationType.NONE)
 			str = str.append("AGG/").append(this.aggType).append(".");
-		str = str.append("NET/").append(this.filterStr).append(".");
-		str = str.append(this.measure).append(".");
+		str = str.append(this.filterStr).append(".");
+		str = str.append(this.measure.getName()).append(".");
 		str = str.append(this.objectType).append("/");
 		str = str.append(this.measureSubType).append("//");
 		str = str.append(this.objectId);

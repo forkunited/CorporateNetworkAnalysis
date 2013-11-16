@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import corp.net.CorpNetObject;
+import corp.net.summary.CorpNetMeasureDegreeIn;
+import corp.net.summary.CorpNetSummaryEntry;
 
 import ark.util.FileUtil;
 
@@ -15,5 +17,16 @@ public class Scratch {
 			CorpNetObject object = CorpNetObject.fromString(line);
 			System.out.println(object.toString());
 		}
+		
+		CorpNetSummaryEntry entry = new CorpNetSummaryEntry("NET", new CorpNetMeasureDegreeIn());
+		entry.setMeasureSubType("ALL");
+		entry.setObjectType(CorpNetObject.Type.NODE);
+		entry.setObjectId("asdf");
+		entry.setValue(1.0);
+		
+		String entryStr = entry.toString();
+		System.out.println(entry.toString());
+		CorpNetSummaryEntry newEntry = CorpNetSummaryEntry.fromString(entryStr);
+		System.out.println(newEntry.toString());
 	}
 }

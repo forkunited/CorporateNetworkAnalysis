@@ -1,6 +1,6 @@
 package corp.net.summary;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.hadoop.io.DoubleWritable;
 
@@ -10,21 +10,21 @@ import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
 public abstract class CorpNetMeasure {
-	public Map<String, Double> map(CorpNetObject obj) {
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetObject obj) {
 		if (obj.getType().equals(CorpNetObject.Type.DOC)) {
-			return map((CorpNetDoc)obj);
+			return map(sourceEntry, (CorpNetDoc)obj);
 		} else if (obj.getType().equals(CorpNetObject.Type.EDGE)) {
-			return map((CorpNetEdge)obj);
+			return map(sourceEntry, (CorpNetEdge)obj);
 		} else if (obj.getType().equals(CorpNetObject.Type.NODE)) {
-			return map((CorpNetNode)obj);
+			return map(sourceEntry, (CorpNetNode)obj);
 		}
 		
 		return null;
 	}
 	
-	public abstract Map<String, Double> map(CorpNetEdge edge);
-	public abstract Map<String, Double> map(CorpNetDoc doc);
-	public abstract Map<String, Double> map(CorpNetNode node);
+	public abstract List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetEdge edge);
+	public abstract List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetDoc doc);
+	public abstract List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetNode node);
 	public abstract Double reduce(Iterable<DoubleWritable> values);
 	public abstract String getName();
 	

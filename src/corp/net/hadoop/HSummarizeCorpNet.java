@@ -3,8 +3,6 @@ package corp.net.hadoop;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -27,6 +25,7 @@ import corp.net.summary.CorpNetMeasureDegreeReturn;
 import corp.net.summary.CorpNetMeasureDegreeTotal;
 import corp.net.summary.CorpNetMeasureMentionCount;
 import corp.net.summary.CorpNetMeasurePSum;
+import corp.net.summary.CorpNetSummaryEntry;
 
 public class HSummarizeCorpNet {	
 	private static List<CorpNetFilter> initFilters() {
@@ -82,11 +81,12 @@ public class HSummarizeCorpNet {
 				if (!filter.filterObject(netObj))
 					continue;
 				for (CorpNetMeasure measure : measures) {
-					Map<String, Double> measureValues = measure.map(netObj);
+					CorpNetSummaryEntry entry = new CorpNetSummaryEntry(filter.toString(), measure);
+					List<CorpNetSummaryEntry> measureValues = measure.map(entry, netObj);
 					if (measureValues == null)
 						continue;
-					for (Entry<String, Double> measureEntry : measureValues.entrySet()) {
-						this.key.set(filter.toString() + "." + measure.getName() + "." + measureEntry.getKey());
+					for (CorpNetSummaryEntry measureEntry : measureValues) {
+						this.key.set(measureEntry.getKey());
 						this.value.set(measureEntry.getValue());
 						context.write(this.key, this.value);
 					}
@@ -99,11 +99,8 @@ public class HSummarizeCorpNet {
 		private DoubleWritable value = new DoubleWritable();
 		
 		public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
-			String keyStr = key.toString();
-			String[] keyParts = keyStr.split("\\.");
-			String measureName = keyParts[1];
-			CorpNetMeasure measure = CorpNetMeasure.fromString(measureName);
-			Double reduceValue = measure.reduce(values);
+			CorpNetSummaryEntry entry = CorpNetSummaryEntry.fromString(key.toString());
+			Double reduceValue = entry.getMeasure().reduce(values);
 			if (reduceValue != null) {
 				this.value.set(reduceValue);
 				context.write(key, this.value);

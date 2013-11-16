@@ -1,36 +1,50 @@
 package corp.net.summary;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.io.DoubleWritable;
 
 import corp.net.CorpNetDoc;
 import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
+import corp.net.CorpNetObject;
 
 public abstract class CorpNetMeasureDegree extends CorpNetMeasure {
 
 	@Override
-	public Map<String, Double> map(CorpNetEdge edge) {
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetEdge edge) {
 		if (edge.getNode1().equals(edge.getNode2()))
 			return null;
 		
-		return edgeMap(edge);
+		return edgeMap(sourceEntry, edge);
 	}
 	
 	@Override
-	public Map<String, Double> map(CorpNetDoc doc) {
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetDoc doc) {
 		return null;
 	}
 
 	@Override
-	public Map<String, Double> map(CorpNetNode node) {
-		Map<String, Double> values = new HashMap<String, Double>(node.getInP().size() + 1);
-		for (String edgeType : node.getInP().keySet())
-			values.put("NODE/" + edgeType + "/" + node.getNode(), -1.0);
-		values.put("NODE/ALL/" + node.getNode(), -1.0);
-		return values;
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetNode node) {
+		List<CorpNetSummaryEntry> entries = new ArrayList<CorpNetSummaryEntry>(node.getInP().size() + 1);
+		for (String edgeType : node.getInP().keySet()) {
+			CorpNetSummaryEntry entry = sourceEntry.clone();
+			entry.setMeasureSubType(edgeType);
+			entry.setObjectType(CorpNetObject.Type.NODE);
+			entry.setObjectId(node.getNode());
+			entry.setValue(-1.0);
+			entries.add(entry);
+		}
+		
+		CorpNetSummaryEntry entry = sourceEntry.clone();
+		entry.setMeasureSubType("ALL");
+		entry.setObjectType(CorpNetObject.Type.NODE);
+		entry.setValue(-1.0);
+		entry.setObjectId(node.getNode());
+		entries.add(entry);
+		
+		return entries;
 	}
 
 	@Override
@@ -50,5 +64,5 @@ public abstract class CorpNetMeasureDegree extends CorpNetMeasure {
 			return null;
 	}
 	
-	protected abstract Map<String, Double> edgeMap(CorpNetEdge edge);
+	protected abstract List<CorpNetSummaryEntry> edgeMap(CorpNetSummaryEntry sourceEntry, CorpNetEdge edge);
 }

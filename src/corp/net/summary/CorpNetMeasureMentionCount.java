@@ -1,6 +1,7 @@
 package corp.net.summary;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,6 +10,7 @@ import org.apache.hadoop.io.DoubleWritable;
 import corp.net.CorpNetDoc;
 import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
+import corp.net.CorpNetObject;
 
 public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 	public CorpNetMeasureMentionCount() {
@@ -16,44 +18,89 @@ public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 	}
 	
 	@Override
-	public Map<String, Double> map(CorpNetEdge edge) {
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry entry, CorpNetEdge edge) {
 		return null;
 	}
 
 	@Override
-	public Map<String, Double> map(CorpNetDoc doc) {
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetDoc doc) {
 		Map<String, Integer> mentionTypes = doc.getTypeCounts();
-		Map<String, Double> values = new HashMap<String, Double>(mentionTypes.size() + 1);
-		for (Entry<String, Integer> entry : mentionTypes.entrySet()) {
-			values.put(entry.getKey() + "/" + doc.getDocument(), (double)entry.getValue());
+		List<CorpNetSummaryEntry> entries = new ArrayList<CorpNetSummaryEntry>(mentionTypes.size() + 1);
+		for (Entry<String, Integer> e : mentionTypes.entrySet()) {
+			CorpNetSummaryEntry entry = sourceEntry.clone();
+			entry.setMeasureSubType(e.getKey());
+			entry.setObjectType(CorpNetObject.Type.DOC);
+			entry.setObjectId(doc.getDocument());
+			entry.setValue(e.getValue());
+			entries.add(entry);
 		}
-		values.put("DOC/ALL/" + doc.getDocument(), (double)doc.getMentionCount());
-		return values;
+		
+		CorpNetSummaryEntry entry = sourceEntry.clone();
+		entry.setMeasureSubType("ALL");
+		entry.setObjectType(CorpNetObject.Type.DOC);
+		entry.setObjectId(doc.getDocument());
+		entry.setValue(doc.getMentionCount());
+		entries.add(entry);
+		
+		return entries;
 	}
 
 	@Override
-	public Map<String, Double> map(CorpNetNode node) {
-		Map<String, Double> values = new HashMap<String, Double>();
+	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetNode node) {
+		List<CorpNetSummaryEntry> entries = new ArrayList<CorpNetSummaryEntry>();
 		
 		Map<String, Integer> inTypes = node.getInTypeCounts();
-		for (Entry<String, Integer> entry : inTypes.entrySet()) {
-			values.put("NODE/IN/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+		for (Entry<String, Integer> e : inTypes.entrySet()) {
+			CorpNetSummaryEntry entry = sourceEntry.clone();
+			entry.setMeasureSubType("IN/" + e.getKey());
+			entry.setObjectType(CorpNetObject.Type.NODE);
+			entry.setObjectId(node.getNode());
+			entry.setValue(e.getValue());
+			entries.add(entry);
 		}
-		values.put("NODE/IN/ALL/" + node.getNode(), (double)node.getInCount());
+		
+		CorpNetSummaryEntry entry = sourceEntry.clone();
+		entry.setMeasureSubType("IN/ALL");
+		entry.setObjectType(CorpNetObject.Type.NODE);
+		entry.setObjectId(node.getNode());
+		entry.setValue(node.getInCount());
+		entries.add(entry);
 		
 		Map<String, Integer> outTypes = node.getOutTypeCounts();
-		for (Entry<String, Integer> entry : outTypes.entrySet()) {
-			values.put("NODE/OUT/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+		for (Entry<String, Integer> e : outTypes.entrySet()) {
+			entry = sourceEntry.clone();
+			entry.setMeasureSubType("OUT/" + e.getKey());
+			entry.setObjectType(CorpNetObject.Type.NODE);
+			entry.setObjectId(node.getNode());
+			entry.setValue(e.getValue());
+			entries.add(entry);
 		}
-		values.put("NODE/OUT/ALL/" + node.getNode(), (double)node.getOutCount());
+		
+		entry = sourceEntry.clone();
+		entry.setMeasureSubType("OUT/ALL");
+		entry.setObjectType(CorpNetObject.Type.NODE);
+		entry.setObjectId(node.getNode());
+		entry.setValue(node.getOutCount());
+		entries.add(entry);
 		
 		Map<String, Integer> selfTypes = node.getSelfTypeCounts();
-		for (Entry<String, Integer> entry : selfTypes.entrySet()) {
-			values.put("NODE/SELF/" + entry.getKey() + "/" + node.getNode(), (double)entry.getValue());
+		for (Entry<String, Integer> e : selfTypes.entrySet()) {
+			entry = sourceEntry.clone();
+			entry.setMeasureSubType("SELF/" + e.getKey());
+			entry.setObjectType(CorpNetObject.Type.NODE);
+			entry.setObjectId(node.getNode());
+			entry.setValue(e.getValue());
+			entries.add(entry);
 		}
-		values.put("NODE/SELF/ALL/" + node.getNode(), (double)node.getSelfCount());
 		
-		return values;
+		entry = sourceEntry.clone();
+		entry.setMeasureSubType("SELF/ALL");
+		entry.setObjectType(CorpNetObject.Type.NODE);
+		entry.setObjectId(node.getNode());
+		entry.setValue(node.getSelfCount());
+		entries.add(entry);
+		
+		return entries;
 	}
 
 	@Override

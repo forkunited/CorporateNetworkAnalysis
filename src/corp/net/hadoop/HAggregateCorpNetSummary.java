@@ -13,31 +13,41 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import corp.net.summary.CorpNetSummaryEntry;
+
 public class HAggregateCorpNetSummary {	
 	public static class HAggregateCorpNetSummaryMapper extends Mapper<Object, Text, Text, DoubleWritable> {
 		private Text key = new Text();
 		private DoubleWritable value = new DoubleWritable();
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-			String[] valueParts = value.toString().split("\t");
+			CorpNetSummaryEntry inputEntry = CorpNetSummaryEntry.fromString(value.toString());
 			
-			String inputKey = valueParts[0];
-			int outputKeyEndIndex = inputKey.lastIndexOf("/");
-			String outputKey = inputKey.substring(0, outputKeyEndIndex);
+			CorpNetSummaryEntry histogramEntry = inputEntry.clone();
+			histogramEntry.setObjectId(String.valueOf((int)Math.floor(inputEntry.getValue())));
+			histogramEntry.setAggType(CorpNetSummaryEntry.AggregationType.HISTOGRAM);
+			histogramEntry.setValue(1.0);
 			
-			double inputValue = Double.valueOf(valueParts[1]);
-			int histogramValue = (int)Math.floor(inputValue);
+			CorpNetSummaryEntry sumEntry = inputEntry.clone();
+			histogramEntry.setObjectId("");
+			histogramEntry.setAggType(CorpNetSummaryEntry.AggregationType.SUM);			
+			histogramEntry.setValue(inputEntry.getValue());
 			
-			this.key.set("HISTOGRAM/" + outputKey + "/" + histogramValue);
-			this.value.set(1.0);
+			CorpNetSummaryEntry countEntry = inputEntry.clone();
+			histogramEntry.setObjectId("");
+			histogramEntry.setAggType(CorpNetSummaryEntry.AggregationType.COUNT);			
+			histogramEntry.setValue(1.0);		
+
+			this.key.set(histogramEntry.getKey());
+			this.value.set(histogramEntry.getValue());
 			context.write(this.key, this.value);
 
-			this.key.set("SUM/" + outputKey);
-			this.value.set(inputValue);
+			this.key.set(sumEntry.getKey());
+			this.value.set(sumEntry.getValue());
 			context.write(this.key, this.value);
 			
-			this.key.set("COUNT/" + outputKey);
-			this.value.set(1.0);
+			this.key.set(countEntry.getKey());
+			this.value.set(countEntry.getValue());
 			context.write(this.key, this.value);
 		}
 	}

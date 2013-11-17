@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import net.sf.json.JSONObject;
@@ -16,6 +17,7 @@ import ark.util.FileUtil;
 import corp.net.summary.CorpNetSummaryEntry;
 import corp.net.util.CorpNetProperties;
 import corp.net.util.JSONUtil;
+import edu.stanford.nlp.util.Pair;
 
 public class SplitCorpNetSummary {
 	private static CorpNetProperties properties = new CorpNetProperties();
@@ -39,32 +41,20 @@ public class SplitCorpNetSummary {
 			String line = null;
 			Map<String, Set<String>> fileMeasureSubtypes = new HashMap<String, Set<String>>();
 			while ((line = br.readLine()) != null) {
-				String[] lineParts = line.split("\t");
-				CorpNetSummaryEntry entry = CorpNetSummaryEntry.fromString(lineParts[0]);
-				Map<String, Double> values = JSONUtil.objToDistribution(JSONObject.fromObject(lineParts[1]));
-				String net = entry.getFilterStr().split("/")[1];
-				
-				File lineOutputDir = new File(outputDir.getAbsolutePath(), net + "/" + entry.getMeasure().getName());
-				if (!lineOutputDir.exists() && !lineOutputDir.mkdirs()) {
-					System.out.println("Failed to create output directory: " + lineOutputDir.getAbsolutePath() + "... exiting.");
-				}
-				
-				File outputFile = new File(lineOutputDir.getAbsoluteFile(), entry.getObjectType().toString());
+				Map<String, Double> values = new TreeMap<String, Double>();
+				Pair<CorpNetSummaryEntry, File> info = getInfoForRotationLine(line, outputDir, values);
+				File outputFile = info.second();
 				
 				if (!fileMeasureSubtypes.containsKey(outputFile.getAbsolutePath()))
 					fileMeasureSubtypes.put(outputFile.getAbsolutePath(), new TreeSet<String>());
 				
-				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
-				w.write(entry.getObjectId() + "\t");
 				for (Entry<String, Double> e : values.entrySet()) {
 					fileMeasureSubtypes.get(outputFile.getAbsolutePath()).add(e.getKey());
-					w.write(e.getValue() + "\t");
 				}
-				w.write("\n");
-				w.close();
 			}
 			br.close();
 			
+			/* Output column headings */
 			for (Entry<String, Set<String>> e : fileMeasureSubtypes.entrySet()) {
 				File measureSubtypesFile = new File(e.getKey());
 				BufferedWriter w = new BufferedWriter(new FileWriter(new File(measureSubtypesFile.getAbsolutePath() + "_MeasureSubTypes"), false));
@@ -74,9 +64,51 @@ public class SplitCorpNetSummary {
 				w.close();
 			}
 			
+			/* Output columns */
+			br = FileUtil.getFileReader(summaryRotationSourceFile.getAbsolutePath());
+			line = null;
+			while ((line = br.readLine()) != null) {
+				Map<String, Double> values = new TreeMap<String, Double>();
+				Pair<CorpNetSummaryEntry, File> info = getInfoForRotationLine(line, outputDir, values);
+				File outputFile = info.second();
+				CorpNetSummaryEntry entry = info.first();
+				
+				Set<String> columns = fileMeasureSubtypes.get(outputFile.getAbsolutePath());
+				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
+				w.write(entry.getObjectId() + "\t");
+				for (String column : columns) {
+					if (values.containsKey(column))
+						w.write(values.get(column) + "\t");
+					else
+						w.write(0.0 + "\t");
+				}
+				w.write("\n");
+				w.close();
+			}
+			br.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static Pair<CorpNetSummaryEntry, File> getInfoForRotationLine(String line, File outputDir, Map<String, Double> outValues) {
+		String[] lineParts = line.split("\t");
+		CorpNetSummaryEntry entry = CorpNetSummaryEntry.fromString(lineParts[0]);
+		Map<String, Double> values = JSONUtil.objToDistribution(JSONObject.fromObject(lineParts[1]));
+		String net = entry.getFilterStr().split("/")[1];
+	
+		File lineOutputDir = new File(outputDir.getAbsolutePath(), net + "/" + entry.getMeasure().getName());
+		if (!lineOutputDir.exists() && !lineOutputDir.mkdirs()) {
+			System.out.println("Failed to create output directory: " + lineOutputDir.getAbsolutePath() + "... exiting.");
+		}
+		
+		File outputFile = new File(lineOutputDir.getAbsoluteFile(), entry.getObjectType().toString());
+		
+		for (Entry<String, Double> e : values.entrySet())
+			outValues.put(e.getKey(), e.getValue());
+		
+		return new Pair<CorpNetSummaryEntry, File>(entry, outputFile);
 	}
 	
 	public static void outputSummaryAggregation(File outputDir, String source) {

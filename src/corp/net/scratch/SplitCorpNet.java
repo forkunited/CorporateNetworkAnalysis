@@ -28,7 +28,7 @@ public class SplitCorpNet {
 				CorpNetObject netObj = CorpNetObject.fromString(line);
 				
 				File netOutputDir = new File(outputDir.getAbsoluteFile(), netObj.getNet());
-				if (!netOutputDir.exists() && netOutputDir.mkdir()) {
+				if (!netOutputDir.exists() && !netOutputDir.mkdir()) {
 					System.out.println("Failed to create output directory: " + netOutputDir.getAbsolutePath() + "... exiting.");
 					return;
 				}

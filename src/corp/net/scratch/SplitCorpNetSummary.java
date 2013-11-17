@@ -42,7 +42,7 @@ public class SplitCorpNetSummary {
 				String[] lineParts = line.split("\t");
 				CorpNetSummaryEntry entry = CorpNetSummaryEntry.fromString(lineParts[0]);
 				Map<String, Double> values = JSONUtil.objToDistribution(JSONObject.fromObject(lineParts[1]));
-				String net = entry.getFilterStr().split("_")[1];
+				String net = entry.getFilterStr().split("/")[1];
 				
 				File lineOutputDir = new File(outputDir.getAbsolutePath(), net + "/" + entry.getMeasure().getName());
 				if (!lineOutputDir.exists() && !lineOutputDir.mkdirs()) {
@@ -88,7 +88,7 @@ public class SplitCorpNetSummary {
 			
 			while ((line = br.readLine()) != null) {
 				CorpNetSummaryEntry entry = CorpNetSummaryEntry.fromString(line);
-				String net = entry.getFilterStr().split("_")[1];
+				String net = entry.getFilterStr().split("/")[1];
 				
 				File lineOutputDir = new File(outputDir.getAbsolutePath(), net + "/" + entry.getMeasure().getName());
 				if (!lineOutputDir.exists() && !lineOutputDir.mkdirs()) {

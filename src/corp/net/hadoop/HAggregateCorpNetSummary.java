@@ -29,14 +29,14 @@ public class HAggregateCorpNetSummary {
 			histogramEntry.setValue(1.0);
 			
 			CorpNetSummaryEntry sumEntry = inputEntry.clone();
-			histogramEntry.setObjectId("");
-			histogramEntry.setAggType(CorpNetSummaryEntry.AggregationType.SUM);			
-			histogramEntry.setValue(inputEntry.getValue());
+			sumEntry.setObjectId("");
+			sumEntry.setAggType(CorpNetSummaryEntry.AggregationType.SUM);			
+			sumEntry.setValue(inputEntry.getValue());
 			
 			CorpNetSummaryEntry countEntry = inputEntry.clone();
-			histogramEntry.setObjectId("");
-			histogramEntry.setAggType(CorpNetSummaryEntry.AggregationType.COUNT);			
-			histogramEntry.setValue(1.0);		
+			countEntry.setObjectId("");
+			countEntry.setAggType(CorpNetSummaryEntry.AggregationType.COUNT);			
+			countEntry.setValue(1.0);		
 
 			this.key.set(histogramEntry.getKey());
 			this.value.set(histogramEntry.getValue());

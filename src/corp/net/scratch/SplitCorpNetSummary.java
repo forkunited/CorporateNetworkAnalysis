@@ -67,7 +67,7 @@ public class SplitCorpNetSummary {
 			
 			for (Entry<String, Set<String>> e : fileMeasureSubtypes.entrySet()) {
 				File measureSubtypesFile = new File(e.getKey());
-				BufferedWriter w = new BufferedWriter(new FileWriter(measureSubtypesFile, false));
+				BufferedWriter w = new BufferedWriter(new FileWriter(new File(measureSubtypesFile.getAbsolutePath() + "_MeasureSubTypes"), false));
 				for (String measureSubtype : e.getValue())
 					w.write(measureSubtype + "\t");
 				
@@ -95,7 +95,11 @@ public class SplitCorpNetSummary {
 					System.out.println("Failed to create output directory: " + lineOutputDir.getAbsolutePath() + "... exiting.");
 				}
 				
-				File outputFile = new File(lineOutputDir.getAbsoluteFile(), entry.getObjectType().toString() + "_" + entry.getAggType());
+				File outputFile = new File(lineOutputDir.getAbsoluteFile(), 
+											entry.getObjectType().toString()
+											+ "_" + entry.getAggType() 
+											+ ((entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) ? "" : "_" + entry.getMeasureSubType() )
+										);
 				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
 
 				if (entry.getObjectId().trim().length() > 0) {

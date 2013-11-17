@@ -93,6 +93,7 @@ public class SplitCorpNetSummary {
 				File lineOutputDir = new File(outputDir.getAbsolutePath(), net + "/" + entry.getMeasure().getName());
 				if (!lineOutputDir.exists() && !lineOutputDir.mkdirs()) {
 					System.out.println("Failed to create output directory: " + lineOutputDir.getAbsolutePath() + "... exiting.");
+					return;
 				}
 				
 				File outputFile = new File(lineOutputDir.getAbsoluteFile(), 
@@ -100,6 +101,12 @@ public class SplitCorpNetSummary {
 											+ "_" + entry.getAggType() 
 											+ ((entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) ? "_" + entry.getMeasureSubType() : "" )
 										);
+				
+				if (!outputFile.getParentFile().exists() && !outputFile.getParentFile().mkdirs()) {
+					System.out.println("Failed to create output directory: " + outputFile.getParentFile().getAbsolutePath() + "... exiting.");
+					return;
+				}
+				
 				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
 
 				if (entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) {

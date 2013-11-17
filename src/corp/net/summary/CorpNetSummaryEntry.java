@@ -118,7 +118,7 @@ public class CorpNetSummaryEntry {
 		int filterStart = 0;
 		if (key.startsWith("AGG/")) {
 			filterStart = key.indexOf(".") + 1;
-			aggType = AggregationType.valueOf(key.substring("AGG/".length(), filterStart));
+			aggType = AggregationType.valueOf(key.substring("AGG/".length(), filterStart-1));
 		}
 		
 		int filterEnd = key.indexOf(".", filterStart);

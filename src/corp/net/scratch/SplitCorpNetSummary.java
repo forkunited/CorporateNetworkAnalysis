@@ -98,14 +98,14 @@ public class SplitCorpNetSummary {
 				File outputFile = new File(lineOutputDir.getAbsoluteFile(), 
 											entry.getObjectType().toString()
 											+ "_" + entry.getAggType() 
-											+ ((entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) ? "" : "_" + entry.getMeasureSubType() )
+											+ ((entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) ? "_" + entry.getMeasureSubType() : "" )
 										);
 				BufferedWriter w = new BufferedWriter(new FileWriter(outputFile, true));
 
-				if (entry.getObjectId().trim().length() > 0) {
+				if (entry.getAggType() == CorpNetSummaryEntry.AggregationType.HISTOGRAM) {
 					w.write(entry.getObjectId() + "\t" + entry.getValue() + "\n");
 				} else {
-					w.write(entry.getValue() + "\n");
+					w.write(entry.getMeasureSubType() + "\t" + entry.getValue() + "\n");
 				}
 				
 				w.close();

@@ -31,4 +31,16 @@ public class MathUtil {
 		}
 		return maxArg;
 	}
+	
+	public static String argMaxHistogram(Map<String, Integer> histogram) {
+		String maxArg = null;
+		double max = 0;
+		for (Entry<String, Integer> entry : histogram.entrySet()) {
+			if (entry.getValue() > max) {
+				max = entry.getValue();
+				maxArg = entry.getKey();
+			}
+		}
+		return maxArg;
+	}
 }

@@ -3,6 +3,7 @@ package corp.net;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import net.sf.json.JSONArray;
@@ -95,5 +96,43 @@ public class CorpNetEdgeSource {
 	
 	public String getMaxType() {
 		return MathUtil.argMaxDistribution(this.p);
+	}
+	
+	public String toHTMLString() {
+		StringBuilder str = new StringBuilder();
+		str = str.append("Annotation File: ").append(getAnnotationFile()).append("<br />");
+		str = str.append("Author: ").append(getAuthor()).append("<br />");
+		
+		Map<Integer, String> annotatedSentences = new TreeMap<Integer, String>();
+		List<Integer> mentionSentences = getMentionSentences();
+		List<Pair<Integer, Integer>> mentionTokenSpans = getMentionTokenSpans();
+		
+		for (int i = 0; i < mentionSentences.size(); i++) {
+			String mentionSentence = null;
+			int mentionSentenceIndex = mentionSentences.get(i);
+			if (annotatedSentences.containsKey(mentionSentenceIndex))
+				mentionSentence = annotatedSentences.get(mentionSentenceIndex);
+			else
+				mentionSentence = getSentenceByIndex(mentionSentenceIndex);
+
+			String[] mentionSentenceTokens = mentionSentence.split("\\s+");
+			int mentionStartToken = mentionTokenSpans.get(i).first();
+			int mentionEndToken = mentionTokenSpans.get(i).second();
+			
+			mentionSentenceTokens[mentionStartToken] = "<b>" + mentionSentenceTokens[mentionStartToken];
+			mentionSentenceTokens[mentionEndToken-1] = mentionSentenceTokens[mentionEndToken-1] + "</b>";
+			
+			StringBuilder newMentionSentence = new StringBuilder();
+			for (int j = 0; j < mentionSentenceTokens.length; j++)
+				newMentionSentence = newMentionSentence.append(mentionSentenceTokens[j]).append(" ");
+			annotatedSentences.put(mentionSentenceIndex, newMentionSentence.toString());
+		}
+		
+		str = str.append("Sentences: ").append("<br />");
+		for (Entry<Integer, String> entry : annotatedSentences.entrySet()) {
+			str = str.append(entry.getValue()).append("<br />");
+		}
+		
+		return str.toString();
 	}
 }

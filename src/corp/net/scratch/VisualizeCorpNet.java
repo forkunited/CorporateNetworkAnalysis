@@ -89,6 +89,8 @@ public class VisualizeCorpNet {
 		if (!networkName.equals("FULL"))
 			return true;
 		
+		System.out.println("Creating visualization for " + networkName + ".");
+		
 		Map<String, String> nodesToTagIds = createTagsForNodes(inputDir, networkName);
 		if (nodesToTagIds == null) {
 			System.out.println("Error: Failed to create tags for nodes in network " + networkName + ".");
@@ -110,6 +112,7 @@ public class VisualizeCorpNet {
 	}
 	
 	private static Map<String, String> createTagsForNodes(File inputDir, String networkName) {
+		System.out.println("Creating tags for nodes in " + networkName + ".");
 		Map<String, String> nodesToTagIds = new HashMap<String, String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
         try {
@@ -118,10 +121,13 @@ public class VisualizeCorpNet {
 			JSONArray messages = new JSONArray();
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
+				
+				System.out.println("Creating tag message for node " + node.getNode() + " in " + networkName + ".");
 				JSONObject tagMessage = createTagMessage(node.getNet(), node.getNode());
 				messages.add(tagMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
+					System.out.println("Sending tag message batch for tags in " + networkName + ".");
 					JSONArray responses = sendRequest(networkName, messages);
 					if (responses == null)
 						return null;
@@ -135,6 +141,7 @@ public class VisualizeCorpNet {
 			}
 			
 			if (messages.size() > 0) {
+				System.out.println("Sending tag message batch for tags in " + networkName + ".");
 				JSONArray responses = sendRequest(networkName, messages);
 				if (responses == null)
 					return null;
@@ -154,6 +161,8 @@ public class VisualizeCorpNet {
 	}
 	
 	private static Map<String, String> createNodes(File inputDir, String networkName, Map<String, String> nodesToTagIds) {
+		System.out.println("Creating nodes in " + networkName + ".");
+		
 		Map<String, String> nodesToNodeIds = new HashMap<String, String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
         try {
@@ -163,6 +172,7 @@ public class VisualizeCorpNet {
 			double[] stepValues = {0, 1, 10, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
+				System.out.println("Creating node message for node " + node.getNode() + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();
 				nodeKeyTerms.addTerm("inCount", getStepValue(node.getInCount(), stepValues));
@@ -209,6 +219,7 @@ public class VisualizeCorpNet {
 				messages.add(nodeMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
+					System.out.println("Sending node message batch for nodes in " + networkName + ".");
 					JSONArray responses = sendRequest(networkName, messages);
 					if (responses == null)
 						return null;
@@ -223,6 +234,7 @@ public class VisualizeCorpNet {
 			}
 			
 			if (messages.size() > 0) {
+				System.out.println("Sending node message batch for nodes in " + networkName + ".");
 				JSONArray responses = sendRequest(networkName, messages);
 				if (responses == null)
 					return null;
@@ -242,6 +254,8 @@ public class VisualizeCorpNet {
 	}
 	
 	private static boolean createRelationships(File inputDir, String networkName, Map<String, String> nodesToNodeIds) {
+		System.out.println("Creating relationships in " + networkName + ".");
+		
 		File inputEdgesFile = new File(inputDir.getAbsolutePath(), "EDGES");
         try {
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
@@ -250,6 +264,7 @@ public class VisualizeCorpNet {
 			double[] stepValues = {0, 1, 10, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
+				System.out.println("Creating edge message for edge " + edge.getNode1() + "_" + edge.getNode2() + " in " + networkName + ".");
 				int direction = 0;
 				int group = 0;
 				String maxType = null;
@@ -303,6 +318,7 @@ public class VisualizeCorpNet {
 				messages.add(relationshipMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
+					System.out.println("Sending edge message batch for edges in " + networkName + ".");
 					JSONArray responses = sendRequest(networkName, messages);
 					if (responses == null)
 						return false;
@@ -312,6 +328,7 @@ public class VisualizeCorpNet {
 			}
 
 			if (messages.size() == MESSAGES_PER_BATCH) {
+				System.out.println("Sending edge message batch for edges in " + networkName + ".");
 				JSONArray responses = sendRequest(networkName, messages);
 				if (responses == null)
 					return false;

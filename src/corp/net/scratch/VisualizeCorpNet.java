@@ -3,6 +3,7 @@ package corp.net.scratch;
 import java.io.BufferedReader;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,6 @@ public class VisualizeCorpNet {
 		
 		public KeyTermDictionary() {
 			this.keyTerms = new HashMap<String, Set<String>>();
-		}
-		
-		public void addTerm(String key, int value) {
-			addTerm(key, String.valueOf(value));
 		}
 		
 		public void addTerms(String key, List<String> values) {
@@ -188,19 +185,19 @@ public class VisualizeCorpNet {
 				System.out.println("Creating node message for node " + nodeName + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();
-				nodeKeyTerms.addTerm("inCount", getStepValue(node.getInCount(), stepValues));
+				nodeKeyTerms.addTerms("inCount", getStepValues(node.getInCount(), stepValues));
 				nodeKeyTerms.addTerm("inPMax", MathUtil.argMaxDistribution(node.getInP()));
 				nodeKeyTerms.addTerm("inTypeCountsMax", MathUtil.argMaxHistogram(node.getInTypeCounts()));
-				nodeKeyTerms.addTerm("outCount", getStepValue(node.getOutCount(), stepValues));
+				nodeKeyTerms.addTerms("outCount", getStepValues(node.getOutCount(), stepValues));
 				nodeKeyTerms.addTerm("outPMax", MathUtil.argMaxDistribution(node.getOutP()));
 				nodeKeyTerms.addTerm("outTypeCountsMax",  MathUtil.argMaxHistogram(node.getOutTypeCounts()));
-				nodeKeyTerms.addTerm("selfCount", getStepValue(node.getSelfCount(), stepValues));
+				nodeKeyTerms.addTerms("selfCount", getStepValues(node.getSelfCount(), stepValues));
 				nodeKeyTerms.addTerm("selfPMax",  MathUtil.argMaxDistribution(node.getSelfP()));
 				nodeKeyTerms.addTerm("selfTypeCountsMax", MathUtil.argMaxHistogram(node.getSelfTypeCounts()));
 				nodeKeyTerms.addTerms("ciks", node.getMetaDataCiks());
 				nodeKeyTerms.addTerms("countries", node.getMetaDataCountries());
 				nodeKeyTerms.addTerms("industries", node.getMetaDataIndustries());
-				nodeKeyTerms.addTerms("sics", node.getMetaDataSics());
+				nodeKeyTerms.addTerms("sics", getPrefixes(node.getMetaDataSics()));
 				nodeKeyTerms.addTerms("tickers", node.getMetaDataTickers());
 				nodeKeyTerms.addTerms("types", node.getMetaDataTypes());
 				
@@ -310,7 +307,7 @@ public class VisualizeCorpNet {
 
 				KeyTermDictionary edgeKeyTerms = new KeyTermDictionary();
 				edgeKeyTerms.addTerm("edgeMaxType", maxType);
-				edgeKeyTerms.addTerm("edgeMentionCount", getStepValue(edge.getForwardCount()+edge.getBackwardCount(), stepValues));
+				edgeKeyTerms.addTerms("edgeMentionCount", getStepValues(edge.getForwardCount()+edge.getBackwardCount(), stepValues));
 				
 				StringBuilder thorough = new StringBuilder();
 				thorough = thorough.append("Search Terms: ").append(edgeKeyTerms.toString()).append("<br />");
@@ -436,12 +433,24 @@ public class VisualizeCorpNet {
 		}
 	}
 	
-	private static int getStepValue(double value, int[] validSteps) {
-		for (int i = 1; i < validSteps.length; i++) {
+	private static List<String> getStepValues(double value, int[] validSteps) {
+		List<String> values = new ArrayList<String>();
+		for (int i = 0; i < validSteps.length; i++) {
 			if (value < validSteps[i])
-				return validSteps[i-1];
+				return values;
+			values.add(String.valueOf(validSteps[i]));
 		}
-		return 0;
+		return values;
+	}
+	
+	private static List<String> getPrefixes(List<String> strs) {
+		List<String> prefixes = new ArrayList<String>();
+		for (String str : strs) {
+			for (int i = 1; i < str.length(); i++) {
+				prefixes.add(str.substring(0, i+1));
+			}
+		}
+		return prefixes;
 	}
 	
 	private static String getListString(List<String> strs) {

@@ -446,7 +446,7 @@ public class VisualizeCorpNet {
 	private static List<String> getPrefixes(List<String> strs) {
 		List<String> prefixes = new ArrayList<String>();
 		for (String str : strs) {
-			for (int i = 1; i < str.length(); i++) {
+			for (int i = 0; i < str.length(); i++) {
 				prefixes.add(str.substring(0, i+1));
 			}
 		}

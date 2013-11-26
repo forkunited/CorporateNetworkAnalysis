@@ -25,7 +25,7 @@ import corp.net.util.MathUtil;
 
 public class VisualizeCorpNet {
 	private static String VISUALIZE_URL = "http://localhost/theMess/server/storeMessGraph.php";
-	private static int MESSAGES_PER_BATCH = 20;
+	private static int MESSAGES_PER_BATCH = 50;
 	private static DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#.##");
 	
 	private static class KeyTermDictionary {
@@ -103,10 +103,10 @@ public class VisualizeCorpNet {
 			return false;
 		}
 		
-		if (!createRelationships(inputDir, networkName, nodesToNodeIds)) {
+		/*if (!createRelationships(inputDir, networkName, nodesToNodeIds)) {
 			System.out.println("Error: Failed to create relationships in network " + networkName + ".");
 			return false;
-		}
+		} Add back later */
 		
 		return true;
 	}
@@ -137,6 +137,8 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
+					
+					return nodesToTagIds; // FIXME Remove later
 				}
 			}
 			
@@ -229,6 +231,8 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
+					
+					return nodesToNodeIds; // FIXME Remove later
 				}
 			
 			}

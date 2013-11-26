@@ -442,7 +442,8 @@ public class VisualizeCorpNet {
 		StringBuilder retStr = new StringBuilder();
 		for (String str : strs)
 			retStr = retStr.append(str).append(",");
-		retStr = retStr.delete(retStr.length() - 1, retStr.length());
+		if (retStr.length() > 0)
+			retStr = retStr.delete(retStr.length() - 1, retStr.length());
 		return retStr.toString();
 	}
 	

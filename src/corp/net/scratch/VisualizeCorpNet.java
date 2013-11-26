@@ -128,6 +128,8 @@ public class VisualizeCorpNet {
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				String nodeName = denormalizeNodeName(node.getNode());
+				if (nodeName.length() == 0)
+					continue;
 				System.out.println("Creating tag message for node " + nodeName + " in " + networkName + ".");
 				JSONObject tagMessage = createTagMessage(node.getNet(), nodeName);
 				messages.add(tagMessage);
@@ -182,6 +184,8 @@ public class VisualizeCorpNet {
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				String nodeName = denormalizeNodeName(node.getNode());
+				if (nodeName.length() == 0)
+					continue;
 				System.out.println("Creating node message for node " + node.getNode() + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();
@@ -278,6 +282,9 @@ public class VisualizeCorpNet {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
 				String nodeName1 = denormalizeNodeName(edge.getNode1());
 				String nodeName2 = denormalizeNodeName(edge.getNode2());
+				if (nodeName1.length() == 0 || nodeName2.length() == 0)
+					continue;
+				
 				System.out.println("Creating edge message for edge " + nodeName1 + " to " + nodeName2 + " in " + networkName + ".");
 				int direction = 0;
 				int group = 0;
@@ -491,6 +498,9 @@ public class VisualizeCorpNet {
 		String[] nameTokens = name.split(" ");
 		StringBuilder denormalizedName = new StringBuilder();
 		for (int i = 0; i < nameTokens.length; i++) {
+			if (nameTokens[i].length() == 0)
+				continue;
+			
 			char[] nameTokenChars = nameTokens[i].toCharArray();
 			nameTokenChars[0] = Character.toUpperCase(nameTokenChars[0]);
 			denormalizedName.append(String.valueOf(nameTokenChars)).append(" ");

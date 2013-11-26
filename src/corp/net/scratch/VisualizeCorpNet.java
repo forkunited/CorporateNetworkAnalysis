@@ -186,7 +186,7 @@ public class VisualizeCorpNet {
 				String nodeName = denormalizeNodeName(node.getNode());
 				if (nodeName.length() == 0)
 					continue;
-				System.out.println("Creating node message for node " + node.getNode() + " in " + networkName + ".");
+				System.out.println("Creating node message for node " + nodeName + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();
 				nodeKeyTerms.addTerm("inCount", getStepValue(node.getInCount(), stepValues));

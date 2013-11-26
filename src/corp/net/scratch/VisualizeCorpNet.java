@@ -134,7 +134,7 @@ public class VisualizeCorpNet {
 						return null;
 					
 					for (int i = 0; i < responses.size(); i++) {
-						nodesToTagIds.put(messages.getJSONObject(i).getString("name"), responses.getJSONObject(i).getString("id"));
+						nodesToTagIds.put(messages.getJSONObject(i).getJSONObject("tag").getString("name"), responses.getJSONObject(i).getString("id"));
 					}
 					
 					messages = new JSONArray();

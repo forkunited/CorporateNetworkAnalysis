@@ -91,7 +91,7 @@ public class VisualizeCorpNet {
 	}
 	
 	private static boolean createCorporateMess(File inputDir, String networkName) {
-		if (!networkName.equals("FULL"))
+		if (!networkName.equals("1994"))
 			return true;
 		
 		System.out.println("Creating visualization for " + networkName + ".");
@@ -108,10 +108,10 @@ public class VisualizeCorpNet {
 			return false;
 		}
 		
-		/*if (!createRelationships(inputDir, networkName, nodesToNodeIds)) {
+		if (!createRelationships(inputDir, networkName, nodesToNodeIds)) {
 			System.out.println("Error: Failed to create relationships in network " + networkName + ".");
 			return false;
-		} Add back later */
+		}
 		
 		return true;
 	}
@@ -145,8 +145,7 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
-					
-					return nodesToTagIds; // FIXME Remove later
+	
 				}
 			}
 			
@@ -242,8 +241,6 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
-					
-					return nodesToNodeIds; // FIXME Remove later
 				}
 			
 			}

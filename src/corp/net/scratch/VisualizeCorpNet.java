@@ -179,7 +179,7 @@ public class VisualizeCorpNet {
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
-			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
+			int[] stepValues = {0, 1, 2, 3, 4, 5, 10, 25, 50, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				String nodeName = denormalizeNodeName(node.getNode());
@@ -274,7 +274,7 @@ public class VisualizeCorpNet {
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
-			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
+			int[] stepValues = {0, 1, 2, 3, 4, 5, 10, 25, 50, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
 				String nodeName1 = denormalizeNodeName(edge.getNode1());
@@ -437,9 +437,9 @@ public class VisualizeCorpNet {
 	}
 	
 	private static int getStepValue(double value, int[] validSteps) {
-		for (int i = 0; i < validSteps.length; i++) {
-			if (value >= validSteps[i])
-				return validSteps[i];
+		for (int i = 1; i < validSteps.length; i++) {
+			if (value < validSteps[i])
+				return validSteps[i-1];
 		}
 		return 0;
 	}

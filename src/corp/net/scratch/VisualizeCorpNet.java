@@ -88,7 +88,7 @@ public class VisualizeCorpNet {
 	}
 	
 	private static boolean createCorporateMess(File inputDir, String networkName) {
-		if (!networkName.equals("1994"))
+		if (!networkName.equals("FULL"))
 			return true;
 		
 		System.out.println("Creating visualization for " + networkName + ".");

@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -116,6 +117,7 @@ public class VisualizeCorpNet {
 	private static Map<String, String> createTagsForNodes(File inputDir, String networkName) {
 		System.out.println("Creating tags for nodes in " + networkName + ".");
 		Map<String, String> nodesToTagIds = new HashMap<String, String>();
+		HashSet<String> nodes = new HashSet<String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODE");
         try {
         	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
@@ -125,8 +127,11 @@ public class VisualizeCorpNet {
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				String nodeName = denormalizeNodeName(node.getNode());
-				if (nodeName.length() == 0)
+				
+				if (nodeName.length() == 0 || nodes.contains(nodeName))
 					continue;
+				nodes.add(nodeName);
+				
 				System.out.println("Creating tag message for node " + nodeName + " in " + networkName + ".");
 				JSONObject tagMessage = createTagMessage(node.getNet(), nodeName);
 				messages.add(tagMessage);
@@ -170,6 +175,7 @@ public class VisualizeCorpNet {
 		System.out.println("Creating nodes in " + networkName + ".");
 		
 		Map<String, String> nodesToNodeIds = new HashMap<String, String>();
+		HashSet<String> nodes = new HashSet<String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODE");
         try {
         	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
@@ -180,8 +186,10 @@ public class VisualizeCorpNet {
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				String nodeName = denormalizeNodeName(node.getNode());
-				if (nodeName.length() == 0)
+				if (nodeName.length() == 0 || nodes.contains(nodeName))
 					continue;
+				nodes.add(nodeName);
+				
 				System.out.println("Creating node message for node " + nodeName + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();

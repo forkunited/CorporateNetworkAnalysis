@@ -114,7 +114,7 @@ public class VisualizeCorpNet {
 	private static Map<String, String> createTagsForNodes(File inputDir, String networkName) {
 		System.out.println("Creating tags for nodes in " + networkName + ".");
 		Map<String, String> nodesToTagIds = new HashMap<String, String>();
-		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
+		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODE");
         try {
         	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
@@ -167,7 +167,7 @@ public class VisualizeCorpNet {
 		System.out.println("Creating nodes in " + networkName + ".");
 		
 		Map<String, String> nodesToNodeIds = new HashMap<String, String>();
-		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
+		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODE");
         try {
         	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
@@ -262,7 +262,7 @@ public class VisualizeCorpNet {
 	private static boolean createRelationships(File inputDir, String networkName, Map<String, String> nodesToNodeIds) {
 		System.out.println("Creating relationships in " + networkName + ".");
 		
-		File inputEdgesFile = new File(inputDir.getAbsolutePath(), "EDGES");
+		File inputEdgesFile = new File(inputDir.getAbsolutePath(), "EDGE");
         try {
         	System.out.println("Reading input file " + inputEdgesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());

@@ -206,7 +206,7 @@ public class VisualizeCorpNet {
 				nodeKeyTerms.addTerms("types", node.getMetaDataTypes());
 				
 				StringBuilder thorough = new StringBuilder();
-				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br/>");
+				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br />");
 				thorough = thorough.append("<b>In-Mention Count:</b> ").append(node.getInCount()).append("<br />");
 				thorough = thorough.append("<b>Out-Mention Count:</b> ").append(node.getOutCount()).append("<br />");
 				thorough = thorough.append("<b>Self-Mention Count:</b> ").append(node.getSelfCount()).append("<br />");

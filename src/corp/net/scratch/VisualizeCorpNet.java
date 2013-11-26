@@ -40,11 +40,16 @@ public class VisualizeCorpNet {
 		}
 		
 		public void addTerms(String key, List<String> values) {
-			for (String value : values)
+			if (values == null)
+				return;
+			for (String value : values) {
 				addTerm(key, value);
+			}
 		}
 		
 		public void addTerm(String key, String term) {
+			if (term == null)
+				return;
 			if (!this.keyTerms.containsKey(key))
 				this.keyTerms.put(key, new TreeSet<String>());
 			this.keyTerms.get(key).add(term);
@@ -188,7 +193,7 @@ public class VisualizeCorpNet {
 				nodeKeyTerms.addTerm("selfCount", getStepValue(node.getSelfCount(), stepValues));
 				nodeKeyTerms.addTerm("selfPMax",  MathUtil.argMaxDistribution(node.getSelfP()));
 				nodeKeyTerms.addTerm("selfTypeCountsMax", MathUtil.argMaxHistogram(node.getSelfTypeCounts()));
-				nodeKeyTerms.addTerms("cik", node.getMetaDataCiks());
+				nodeKeyTerms.addTerms("ciks", node.getMetaDataCiks());
 				nodeKeyTerms.addTerms("countries", node.getMetaDataCountries());
 				nodeKeyTerms.addTerms("industries", node.getMetaDataIndustries());
 				nodeKeyTerms.addTerms("sics", node.getMetaDataSics());
@@ -319,7 +324,6 @@ public class VisualizeCorpNet {
 				for (CorpNetEdgeSource source : sources) {
 					thorough = thorough.append(source.toHTMLString()).append("\n\n");
 				}
-				
 				
 				JSONObject relationshipMessage = createRelationshipMessage(nodesToNodeIds.get(edge.getNode1()), nodesToNodeIds.get(edge.getNode2()), 0, group, direction, thorough.toString());
 				messages.add(relationshipMessage);

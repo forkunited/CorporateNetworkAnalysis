@@ -84,7 +84,7 @@ public class VisualizeCorpNet {
 				continue;
 			String networkName = networkDir.getName();
 			if (!createCorporateMess(networkDir, networkName)) {
-				System.out.println("Failed to output visualizatin construction file for network " + networkName + ".");
+				System.out.println("Failed to output visualization construction file for network " + networkName + ".");
 				return;
 			}
 		}

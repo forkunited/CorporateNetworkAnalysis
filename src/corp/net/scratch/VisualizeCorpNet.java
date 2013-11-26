@@ -127,9 +127,9 @@ public class VisualizeCorpNet {
 			JSONArray messages = new JSONArray();
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
-				
-				System.out.println("Creating tag message for node " + node.getNode() + " in " + networkName + ".");
-				JSONObject tagMessage = createTagMessage(node.getNet(), node.getNode());
+				String nodeName = denormalizeNodeName(node.getNode());
+				System.out.println("Creating tag message for node " + nodeName + " in " + networkName + ".");
+				JSONObject tagMessage = createTagMessage(node.getNet(), nodeName);
 				messages.add(tagMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
@@ -181,6 +181,7 @@ public class VisualizeCorpNet {
 			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
+				String nodeName = denormalizeNodeName(node.getNode());
 				System.out.println("Creating node message for node " + node.getNode() + " in " + networkName + ".");
 				
 				KeyTermDictionary nodeKeyTerms = new KeyTermDictionary();
@@ -202,7 +203,6 @@ public class VisualizeCorpNet {
 				
 				StringBuilder thorough = new StringBuilder();
 				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br/>");
-				thorough = thorough.append("<b>Non-normalized name:</b> ").append(node.getNonNormalizedName()).append("<br/><br/>");
 				thorough = thorough.append("<b>In-Mention Count:</b> ").append(node.getInCount()).append("<br />");
 				thorough = thorough.append("<b>Out-Mention Count:</b> ").append(node.getOutCount()).append("<br />");
 				thorough = thorough.append("<b>Self-Mention Count:</b> ").append(node.getSelfCount()).append("<br />");
@@ -224,7 +224,7 @@ public class VisualizeCorpNet {
 				thorough = thorough.append(getDistributionString(node.getSelfP(), node.getSelfTypeCounts()));
 				thorough = thorough.append("<br />");
 				
-				JSONObject nodeMessage = createNodeMessage(nodesToTagIds.get(node.getNode()) + "_0", nodesToTagIds.get(node.getNode()), node.getNode(), thorough.toString());
+				JSONObject nodeMessage = createNodeMessage(nodesToTagIds.get(nodeName) + "_0", nodesToTagIds.get(nodeName), nodeName, thorough.toString());
 				messages.add(nodeMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
@@ -276,7 +276,9 @@ public class VisualizeCorpNet {
 			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
-				System.out.println("Creating edge message for edge " + edge.getNode1() + "_" + edge.getNode2() + " in " + networkName + ".");
+				String nodeName1 = denormalizeNodeName(edge.getNode1());
+				String nodeName2 = denormalizeNodeName(edge.getNode2());
+				System.out.println("Creating edge message for edge " + nodeName1 + " to " + nodeName2 + " in " + networkName + ".");
 				int direction = 0;
 				int group = 0;
 				String maxType = null;
@@ -325,7 +327,7 @@ public class VisualizeCorpNet {
 					thorough = thorough.append(source.toHTMLString()).append("<br /><br />");
 				}
 				
-				JSONObject relationshipMessage = createRelationshipMessage(nodesToNodeIds.get(edge.getNode1()), nodesToNodeIds.get(edge.getNode2()), 0, group, direction, thorough.toString());
+				JSONObject relationshipMessage = createRelationshipMessage(nodesToNodeIds.get(nodeName1), nodesToNodeIds.get(nodeName2), 0, group, direction, thorough.toString());
 				messages.add(relationshipMessage);
 				
 				if (messages.size() == MESSAGES_PER_BATCH) {
@@ -481,5 +483,22 @@ public class VisualizeCorpNet {
 			group++;
 		}
 		return typesToGroups;
+	}
+	
+	private static String denormalizeNodeName(String name) {
+		name = name.replaceAll("_", " ");
+		name = name.replaceAll("\\s+", " ");
+		String[] nameTokens = name.split(" ");
+		StringBuilder denormalizedName = new StringBuilder();
+		for (int i = 0; i < nameTokens.length; i++) {
+			char[] nameTokenChars = nameTokens[i].toCharArray();
+			nameTokenChars[0] = Character.toUpperCase(nameTokenChars[0]);
+			denormalizedName.append(String.valueOf(nameTokenChars)).append(" ");
+		}
+		
+		if (denormalizedName.length() > 0)
+			denormalizedName.delete(denormalizedName.length()-1, denormalizedName.length());
+		
+		return denormalizedName.toString();
 	}
 }

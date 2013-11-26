@@ -203,24 +203,24 @@ public class VisualizeCorpNet {
 				StringBuilder thorough = new StringBuilder();
 				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br/>");
 				
-				thorough = thorough.append("In-Mention Count: ").append(node.getInCount()).append("<br />");
-				thorough = thorough.append("Out-Mention Count: ").append(node.getOutCount()).append("<br />");
-				thorough = thorough.append("Self-Mention Count: ").append(node.getSelfCount()).append("<br />");
+				thorough = thorough.append("<b>In-Mention Count:</b> ").append(node.getInCount()).append("<br />");
+				thorough = thorough.append("<b>Out-Mention Count:</b> ").append(node.getOutCount()).append("<br />");
+				thorough = thorough.append("<b>Self-Mention Count:</b> ").append(node.getSelfCount()).append("<br />");
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("Ciks: ").append(getListString(node.getMetaDataCiks())).append("<br />");
-				thorough = thorough.append("Countries: ").append(getListString(node.getMetaDataCountries())).append("<br />");
-				thorough = thorough.append("Industries: ").append(getListString(node.getMetaDataIndustries())).append("<br />");
-				thorough = thorough.append("Sics: ").append(getListString(node.getMetaDataSics())).append("<br />");
-				thorough = thorough.append("Tickers: ").append(getListString(node.getMetaDataTickers())).append("<br />");
-				thorough = thorough.append("Types: ").append(getListString(node.getMetaDataTypes())).append("<br />");
+				thorough = thorough.append("<b>Ciks:</b> ").append(getListString(node.getMetaDataCiks())).append("<br />");
+				thorough = thorough.append("<b>Countries:</b> ").append(getListString(node.getMetaDataCountries())).append("<br />");
+				thorough = thorough.append("<b>Industries:</b> ").append(getListString(node.getMetaDataIndustries())).append("<br />");
+				thorough = thorough.append("<b>Sics:</b> ").append(getListString(node.getMetaDataSics())).append("<br />");
+				thorough = thorough.append("<b>Tickers:</b> ").append(getListString(node.getMetaDataTickers())).append("<br />");
+				thorough = thorough.append("<b>Types:</b> ").append(getListString(node.getMetaDataTypes())).append("<br />");
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("In-P (Count): ").append("<br />");
+				thorough = thorough.append("<b>In-P (Count):</b> ").append("<br />");
 				thorough = thorough.append(getDistributionString(node.getInP(), node.getInTypeCounts()));
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("Out-P (Count): ");
+				thorough = thorough.append("<b>Out-P (Count):</b> ");
 				thorough = thorough.append(getDistributionString(node.getOutP(), node.getOutTypeCounts()));
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("Self-P (Count): ");
+				thorough = thorough.append("<b>Self-P (Count):</b> ");
 				thorough = thorough.append(getDistributionString(node.getSelfP(), node.getSelfTypeCounts()));
 				thorough = thorough.append("<br />");
 				
@@ -309,17 +309,17 @@ public class VisualizeCorpNet {
 				StringBuilder thorough = new StringBuilder();
 				thorough = thorough.append("Search Terms: ").append(edgeKeyTerms.toString()).append("<br />");
 				
-				thorough = thorough.append("Most Likely Type: ").append(maxType).append("<br />");
-				thorough = thorough.append("Total Mentions: ").append(edge.getForwardCount()+edge.getBackwardCount()).append("<br />");
-				thorough = thorough.append("Forward Mention Count: ").append(edge.getForwardCount()).append("<br />");
-				thorough = thorough.append("Backward Mention Count: ").append(edge.getBackwardCount()).append("<br />");
-				thorough = thorough.append("Forward-P:").append("<br />");
+				thorough = thorough.append("<b>Most Likely Type:</b> ").append(maxType).append("<br />");
+				thorough = thorough.append("<b>Total Mentions:</b> ").append(edge.getForwardCount()+edge.getBackwardCount()).append("<br />");
+				thorough = thorough.append("<b>Forward Mention Count:</b> ").append(edge.getForwardCount()).append("<br />");
+				thorough = thorough.append("<b>Backward Mention Count:</b> ").append(edge.getBackwardCount()).append("<br />");
+				thorough = thorough.append("<b>Forward-P:</b>").append("<br />");
 				thorough = thorough.append(getDistributionString(edge.getForwardP(), null));
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("Backward-P:").append("<br />");
+				thorough = thorough.append("<b>Backward-P:</b>").append("<br />");
 				thorough = thorough.append(getDistributionString(edge.getBackwardP(), null));
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("Sources: <br />");
+				thorough = thorough.append("<b>Sources:</b> <br />");
 				List<CorpNetEdgeSource> sources = edge.getSources();
 				for (CorpNetEdgeSource source : sources) {
 					thorough = thorough.append(source.toHTMLString()).append("<br /><br />");
@@ -439,9 +439,11 @@ public class VisualizeCorpNet {
 	}
 	
 	private static String getListString(List<String> strs) {
+		Set<String> strSet = new TreeSet<String>();
+		strSet.addAll(strs);
 		StringBuilder retStr = new StringBuilder();
-		for (String str : strs)
-			retStr = retStr.append(str).append(",");
+		for (String str : strSet)
+			retStr = retStr.append(str).append(", ");
 		if (retStr.length() > 0)
 			retStr = retStr.delete(retStr.length() - 1, retStr.length());
 		return retStr.toString();

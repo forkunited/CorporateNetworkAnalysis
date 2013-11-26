@@ -116,6 +116,7 @@ public class VisualizeCorpNet {
 		Map<String, String> nodesToTagIds = new HashMap<String, String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
         try {
+        	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
@@ -168,6 +169,7 @@ public class VisualizeCorpNet {
 		Map<String, String> nodesToNodeIds = new HashMap<String, String>();
 		File inputNodesFile = new File(inputDir.getAbsolutePath(), "NODES");
         try {
+        	System.out.println("Reading input file " + inputNodesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
@@ -262,6 +264,7 @@ public class VisualizeCorpNet {
 		
 		File inputEdgesFile = new File(inputDir.getAbsolutePath(), "EDGES");
         try {
+        	System.out.println("Reading input file " + inputEdgesFile.getAbsolutePath() + "...");
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();

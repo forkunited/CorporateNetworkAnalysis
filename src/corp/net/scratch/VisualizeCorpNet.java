@@ -35,7 +35,7 @@ public class VisualizeCorpNet {
 			this.keyTerms = new HashMap<String, Set<String>>();
 		}
 		
-		public void addTerm(String key, double value) {
+		public void addTerm(String key, int value) {
 			addTerm(key, String.valueOf(value));
 		}
 		
@@ -178,7 +178,7 @@ public class VisualizeCorpNet {
 			BufferedReader br = FileUtil.getFileReader(inputNodesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
-			double[] stepValues = {0, 1, 10, 100, 1000, 10000, 100000};
+			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetNode node = CorpNetNode.fromString(line);
 				System.out.println("Creating node message for node " + node.getNode() + " in " + networkName + ".");
@@ -201,28 +201,28 @@ public class VisualizeCorpNet {
 				nodeKeyTerms.addTerms("types", node.getMetaDataTypes());
 				
 				StringBuilder thorough = new StringBuilder();
-				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("\n");
+				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br/>");
 				
-				thorough = thorough.append("In-Mention Count: ").append(node.getInCount()).append("\n");
-				thorough = thorough.append("Out-Mention Count: ").append(node.getOutCount()).append("\n");
-				thorough = thorough.append("Self-Mention Count: ").append(node.getSelfCount()).append("\n");
-				thorough = thorough.append("\n");
-				thorough = thorough.append("Ciks: ").append(getListString(node.getMetaDataCiks())).append("\n");
-				thorough = thorough.append("Countries: ").append(getListString(node.getMetaDataCountries())).append("\n");
-				thorough = thorough.append("Industries: ").append(getListString(node.getMetaDataIndustries())).append("\n");
-				thorough = thorough.append("Sics: ").append(getListString(node.getMetaDataSics())).append("\n");
-				thorough = thorough.append("Tickers: ").append(getListString(node.getMetaDataTickers())).append("\n");
-				thorough = thorough.append("Types: ").append(getListString(node.getMetaDataTypes())).append("\n");
-				thorough = thorough.append("\n");
-				thorough = thorough.append("In-P (Count): ").append("\n");
+				thorough = thorough.append("In-Mention Count: ").append(node.getInCount()).append("<br />");
+				thorough = thorough.append("Out-Mention Count: ").append(node.getOutCount()).append("<br />");
+				thorough = thorough.append("Self-Mention Count: ").append(node.getSelfCount()).append("<br />");
+				thorough = thorough.append("<br />");
+				thorough = thorough.append("Ciks: ").append(getListString(node.getMetaDataCiks())).append("<br />");
+				thorough = thorough.append("Countries: ").append(getListString(node.getMetaDataCountries())).append("<br />");
+				thorough = thorough.append("Industries: ").append(getListString(node.getMetaDataIndustries())).append("<br />");
+				thorough = thorough.append("Sics: ").append(getListString(node.getMetaDataSics())).append("<br />");
+				thorough = thorough.append("Tickers: ").append(getListString(node.getMetaDataTickers())).append("<br />");
+				thorough = thorough.append("Types: ").append(getListString(node.getMetaDataTypes())).append("<br />");
+				thorough = thorough.append("<br />");
+				thorough = thorough.append("In-P (Count): ").append("<br />");
 				thorough = thorough.append(getDistributionString(node.getInP(), node.getInTypeCounts()));
-				thorough = thorough.append("\n");
+				thorough = thorough.append("<br />");
 				thorough = thorough.append("Out-P (Count): ");
 				thorough = thorough.append(getDistributionString(node.getOutP(), node.getOutTypeCounts()));
-				thorough = thorough.append("\n");
+				thorough = thorough.append("<br />");
 				thorough = thorough.append("Self-P (Count): ");
 				thorough = thorough.append(getDistributionString(node.getSelfP(), node.getSelfTypeCounts()));
-				thorough = thorough.append("\n");
+				thorough = thorough.append("<br />");
 				
 				JSONObject nodeMessage = createNodeMessage(nodesToTagIds.get(node.getNode()) + "_0", nodesToTagIds.get(node.getNode()), node.getNode(), thorough.toString());
 				messages.add(nodeMessage);
@@ -273,7 +273,7 @@ public class VisualizeCorpNet {
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
-			double[] stepValues = {0, 1, 10, 100, 1000, 10000, 100000};
+			int[] stepValues = {0, 1, 2, 3, 10, 20, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
 				System.out.println("Creating edge message for edge " + edge.getNode1() + "_" + edge.getNode2() + " in " + networkName + ".");
@@ -307,22 +307,22 @@ public class VisualizeCorpNet {
 				edgeKeyTerms.addTerm("edgeMentionCount", getStepValue(edge.getForwardCount()+edge.getBackwardCount(), stepValues));
 				
 				StringBuilder thorough = new StringBuilder();
-				thorough = thorough.append("Search Terms: ").append(edgeKeyTerms.toString()).append("\n");
+				thorough = thorough.append("Search Terms: ").append(edgeKeyTerms.toString()).append("<br />");
 				
-				thorough = thorough.append("Most Likely Type: ").append(maxType).append("\n");
-				thorough = thorough.append("Total Mentions: ").append(edge.getForwardCount()+edge.getBackwardCount()).append("\n");
-				thorough = thorough.append("Forward Mention Count: ").append(edge.getForwardCount()).append("\n");
-				thorough = thorough.append("Backward Mention Count: ").append(edge.getBackwardCount()).append("\n");
-				thorough = thorough.append("Forward-P:").append("\n");
+				thorough = thorough.append("Most Likely Type: ").append(maxType).append("<br />");
+				thorough = thorough.append("Total Mentions: ").append(edge.getForwardCount()+edge.getBackwardCount()).append("<br />");
+				thorough = thorough.append("Forward Mention Count: ").append(edge.getForwardCount()).append("<br />");
+				thorough = thorough.append("Backward Mention Count: ").append(edge.getBackwardCount()).append("<br />");
+				thorough = thorough.append("Forward-P:").append("<br />");
 				thorough = thorough.append(getDistributionString(edge.getForwardP(), null));
-				thorough = thorough.append("\n");
-				thorough = thorough.append("Backward-P:").append("\n");
+				thorough = thorough.append("<br />");
+				thorough = thorough.append("Backward-P:").append("<br />");
 				thorough = thorough.append(getDistributionString(edge.getBackwardP(), null));
-				thorough = thorough.append("\n");
-				thorough = thorough.append("Sources: \n");
+				thorough = thorough.append("<br />");
+				thorough = thorough.append("Sources: <br />");
 				List<CorpNetEdgeSource> sources = edge.getSources();
 				for (CorpNetEdgeSource source : sources) {
-					thorough = thorough.append(source.toHTMLString()).append("\n\n");
+					thorough = thorough.append(source.toHTMLString()).append("<br /><br />");
 				}
 				
 				JSONObject relationshipMessage = createRelationshipMessage(nodesToNodeIds.get(edge.getNode1()), nodesToNodeIds.get(edge.getNode2()), 0, group, direction, thorough.toString());
@@ -430,12 +430,12 @@ public class VisualizeCorpNet {
 		}
 	}
 	
-	private static double getStepValue(double value, double[] validSteps) {
+	private static int getStepValue(double value, int[] validSteps) {
 		for (int i = 0; i < validSteps.length; i++) {
 			if (value >= validSteps[i])
 				return validSteps[i];
 		}
-		return 0.0;
+		return 0;
 	}
 	
 	private static String getListString(List<String> strs) {
@@ -456,10 +456,10 @@ public class VisualizeCorpNet {
 						   .append(DOUBLE_FORMAT.format(entry.getValue()));
 			if (histogram != null) {
 				retStr = retStr.append(" (")
-							   .append(histogram.get(entry.getKey()))
-							   .append(")\n");
+							   .append((histogram.containsKey(entry.getKey())) ? histogram.get(entry.getKey()) : 0)
+							   .append(")<br />");
 			} else {
-				retStr = retStr.append("\n");
+				retStr = retStr.append("<br />");
 			}
 		}
 		

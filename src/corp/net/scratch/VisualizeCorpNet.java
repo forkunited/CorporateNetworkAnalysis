@@ -194,12 +194,12 @@ public class VisualizeCorpNet {
 				nodeKeyTerms.addTerms("selfCount", getStepValues(node.getSelfCount(), stepValues));
 				nodeKeyTerms.addTerm("selfPMax",  MathUtil.argMaxDistribution(node.getSelfP()));
 				nodeKeyTerms.addTerm("selfTypeCountsMax", MathUtil.argMaxHistogram(node.getSelfTypeCounts()));
-				nodeKeyTerms.addTerms("ciks", node.getMetaDataCiks());
-				nodeKeyTerms.addTerms("countries", node.getMetaDataCountries());
-				nodeKeyTerms.addTerms("industries", node.getMetaDataIndustries());
-				nodeKeyTerms.addTerms("sics", getPrefixes(node.getMetaDataSics()));
-				nodeKeyTerms.addTerms("tickers", node.getMetaDataTickers());
-				nodeKeyTerms.addTerms("types", node.getMetaDataTypes());
+				nodeKeyTerms.addTerms("cik", node.getMetaDataCiks());
+				nodeKeyTerms.addTerms("country", node.getMetaDataCountries());
+				nodeKeyTerms.addTerms("industry", node.getMetaDataIndustries());
+				nodeKeyTerms.addTerms("sic", getPrefixes(node.getMetaDataSics()));
+				nodeKeyTerms.addTerms("ticker", node.getMetaDataTickers());
+				nodeKeyTerms.addTerms("type", node.getMetaDataTypes());
 				
 				StringBuilder thorough = new StringBuilder();
 				thorough = thorough.append("Search Terms: ").append(nodeKeyTerms.toString()).append("<br />");

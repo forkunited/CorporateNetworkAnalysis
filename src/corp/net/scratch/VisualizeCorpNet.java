@@ -445,7 +445,9 @@ public class VisualizeCorpNet {
 		for (String str : strSet)
 			retStr = retStr.append(str).append(", ");
 		if (retStr.length() > 0)
-			retStr = retStr.delete(retStr.length() - 1, retStr.length());
+			retStr = retStr.delete(retStr.length() - 2, retStr.length());
+		else 
+			retStr = retStr.append("[None]");
 		return retStr.toString();
 	}
 	

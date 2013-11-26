@@ -400,7 +400,7 @@ public class VisualizeCorpNet {
 		relationship.put("thorough", thorough);
 		
 		JSONObject relationshipMessage = new JSONObject();
-		relationshipMessage.put("messageType", "requestAddNode");
+		relationshipMessage.put("messageType", "requestAddRelationship");
 		relationshipMessage.put("relationship", relationship);
 		
 		return relationshipMessage;

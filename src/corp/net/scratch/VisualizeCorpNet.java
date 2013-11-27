@@ -284,7 +284,8 @@ public class VisualizeCorpNet {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
 				String nodeName1 = denormalizeNodeName(edge.getNode1());
 				String nodeName2 = denormalizeNodeName(edge.getNode2());
-				if (nodeName1.length() == 0 || nodeName2.length() == 0)
+				
+				if (nodeName1.length() == 0 || nodeName2.length() == 0 || nodeName1.equals(nodeName2))
 					continue;
 				
 				System.out.println("Creating edge message for edge " + nodeName1 + " to " + nodeName2 + " in " + networkName + ".");

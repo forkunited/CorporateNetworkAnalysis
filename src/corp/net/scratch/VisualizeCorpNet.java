@@ -27,7 +27,7 @@ import corp.net.util.MathUtil;
 
 public class VisualizeCorpNet {
 	private static String VISUALIZE_URL = "http://demo.ark.cs.cmu.edu/cre/server/storeMessGraph.php";
-	private static int MESSAGES_PER_BATCH = 50;
+	private static int MESSAGES_PER_BATCH = 500;
 	private static DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#.##");
 	
 	private static class KeyTermDictionary {

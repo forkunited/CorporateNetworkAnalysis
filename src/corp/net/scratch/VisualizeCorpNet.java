@@ -279,14 +279,17 @@ public class VisualizeCorpNet {
 			BufferedReader br = FileUtil.getFileReader(inputEdgesFile.getAbsolutePath());
 			String line = null;
 			JSONArray messages = new JSONArray();
+			HashSet<String> edges = new HashSet<String>();
 			int[] stepValues = {0, 1, 2, 3, 4, 5, 10, 25, 50, 100, 1000, 10000, 100000};
 			while ((line = br.readLine()) != null) {
 				CorpNetEdge edge = CorpNetEdge.fromString(line);
 				String nodeName1 = denormalizeNodeName(edge.getNode1());
 				String nodeName2 = denormalizeNodeName(edge.getNode2());
-				
-				if (nodeName1.length() == 0 || nodeName2.length() == 0 || nodeName1.equals(nodeName2))
+				String edgeName = nodeName1 + "_" + nodeName2;
+				String edgeNameBackward = nodeName2 + "_" + nodeName1;
+				if (nodeName1.length() == 0 || nodeName2.length() == 0 || nodeName1.equals(nodeName2) || edges.contains(edgeName) || edges.contains(edgeNameBackward))
 					continue;
+				edges.add(edgeName);
 				
 				System.out.println("Creating edge message for edge " + nodeName1 + " to " + nodeName2 + " in " + networkName + ".");
 				int direction = 0;

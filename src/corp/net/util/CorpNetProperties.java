@@ -9,6 +9,7 @@ public class CorpNetProperties extends ARKProperties {
 	private String corpMetaDataGazetteerPath;
 	private String bloombergMetaDataPath;
 	private String bloombergMetaDataGazetteerPath;
+	private String nonCorpInitialismGazetteerPath;
 	private String bloombergCorpTickerGazetteerPath;
 	private String stopWordGazetteerPath;
 	
@@ -23,6 +24,7 @@ public class CorpNetProperties extends ARKProperties {
 		this.bloombergMetaDataPath = loadProperty("bloombergMetaDataPath");
 		this.bloombergMetaDataGazetteerPath = loadProperty("bloombergMetaDataGazetteerPath");
 		this.bloombergCorpTickerGazetteerPath = loadProperty("bloombergCorpTickerGazetteerPath");
+		this.nonCorpInitialismGazetteerPath = loadProperty("nonCorpInitialismGazetteerPath");
 		this.stopWordGazetteerPath = loadProperty("stopWordGazetteerPath");
 	}
 	
@@ -52,6 +54,10 @@ public class CorpNetProperties extends ARKProperties {
 	
 	public String getBloombergCorpTickerGazetteerPath() {
 		return this.bloombergCorpTickerGazetteerPath;
+	}
+	
+	public String getNonCorpInitialismGazetteerPath() {
+		return this.nonCorpInitialismGazetteerPath;
 	}
 	
 	public String getStopWordGazetteerPath() {

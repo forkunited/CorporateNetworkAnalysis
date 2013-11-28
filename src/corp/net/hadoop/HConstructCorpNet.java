@@ -1,6 +1,7 @@
 package corp.net.hadoop;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -36,14 +37,20 @@ public class HConstructCorpNet {
 		private CorpNetProperties properties = new CorpNetProperties();
 		private Gazetteer stopWordGazetteer = new Gazetteer("StopWord", this.properties.getStopWordGazetteerPath());
 		private Gazetteer bloombergCorpTickerGazetteer = new Gazetteer("BloombergCorpTickerGazetteer", this.properties.getBloombergCorpTickerGazetteerPath());
+		private Gazetteer nonCorpInitialismGazetteer = new Gazetteer("NonCorpInitialismGazetteer", this.properties.getNonCorpInitialismGazetteerPath());
 		private StringUtil.StringTransform stopWordCleanFn = StringUtil.getStopWordsCleanFn(this.stopWordGazetteer);
-		private CorpKeyFn corpKeyFn = new CorpKeyFn(this.bloombergCorpTickerGazetteer, this.stopWordCleanFn);
+		private CorpKeyFn corpKeyFn = null; 
 	
 		/*
 		 * Skip badly gzip'd files
 		 */
 		public void run(Context context) throws InterruptedException {
 			try {
+				List<Gazetteer> corpKeyFnKeyMaps = new ArrayList<Gazetteer>();
+				corpKeyFnKeyMaps.add(this.bloombergCorpTickerGazetteer);
+				corpKeyFnKeyMaps.add(this.nonCorpInitialismGazetteer);
+				this.corpKeyFn = new CorpKeyFn(corpKeyFnKeyMaps, this.stopWordCleanFn);
+				
 				setup(context);
 				while (context.nextKeyValue()) {
 					map(context.getCurrentKey(), context.getCurrentValue(),

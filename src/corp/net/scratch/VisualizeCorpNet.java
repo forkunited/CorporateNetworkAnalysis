@@ -69,6 +69,7 @@ public class VisualizeCorpNet {
 	public static void main(String[] args) {
 		CorpNetProperties properties = new CorpNetProperties();
 		String source = args[0];
+		String filterNetworkName = args[1];
 		File inputDir = new File(properties.getNetworkDirPath(), source);
 		
 		if (!inputDir.exists()) {
@@ -81,6 +82,8 @@ public class VisualizeCorpNet {
 			if (!networkDir.isDirectory())
 				continue;
 			String networkName = networkDir.getName();
+			if (!networkName.equals(filterNetworkName))
+				continue;
 			if (!createCorporateMess(networkDir, networkName)) {
 				System.out.println("Failed to output visualization construction file for network " + networkName + ".");
 				return;
@@ -88,10 +91,7 @@ public class VisualizeCorpNet {
 		}
 	}
 	
-	private static boolean createCorporateMess(File inputDir, String networkName) {
-		if (!networkName.equals("FULL"))
-			return true;
-		
+	private static boolean createCorporateMess(File inputDir, String networkName) {		
 		System.out.println("Creating visualization for " + networkName + ".");
 		
 		Map<String, String> nodesToTagIds = createTagsForNodes(inputDir, networkName);

@@ -325,15 +325,34 @@ public class VisualizeCorpNet {
 				thorough = thorough.append("Search Terms: ").append(edgeKeyTerms.toString()).append("<br />");
 				
 				thorough = thorough.append("<b>Most Likely Type:</b> ").append(maxType).append("<br />");
-				thorough = thorough.append("<b>Total Mentions:</b> ").append(edge.getForwardCount()+edge.getBackwardCount()).append("<br />");
-				thorough = thorough.append("<b>Forward Mention Count:</b> ").append(edge.getForwardCount()).append("<br />");
-				thorough = thorough.append("<b>Backward Mention Count:</b> ").append(edge.getBackwardCount()).append("<br />");
-				thorough = thorough.append("<b>Forward-P:</b>").append("<br />");
-				thorough = thorough.append(getDistributionString(edge.getForwardP(), null));
-				thorough = thorough.append("<br />");
-				thorough = thorough.append("<b>Backward-P:</b>").append("<br />");
-				thorough = thorough.append(getDistributionString(edge.getBackwardP(), null));
-				thorough = thorough.append("<br />");
+				
+				if (edge.getForwardCount() > 0 && edge.getBackwardCount() > 0) {
+					thorough = thorough.append("<b>Total Mentions:</b> ").append(edge.getForwardCount()+edge.getBackwardCount()).append("<br />");
+					thorough = thorough.append("<b>Forward Mention Count:</b> ").append(edge.getForwardCount()).append("<br />");
+					thorough = thorough.append("<b>Backward Mention Count:</b> ").append(edge.getBackwardCount()).append("<br />");
+					thorough = thorough.append("<b>Forward-P:</b>").append("<br />");
+					thorough = thorough.append(getDistributionString(edge.getForwardP(), null));
+					thorough = thorough.append("<br />");
+					thorough = thorough.append("<b>Backward-P:</b>").append("<br />");
+					thorough = thorough.append(getDistributionString(edge.getBackwardP(), null));
+					thorough = thorough.append("<br />");
+				} else if (edge.getForwardCount() > 0 || edge.getBackwardCount() > 0){
+					String distStr = null;
+					int mentionCount = 0;
+					if (edge.getForwardCount() > 0) {
+						distStr = getDistributionString(edge.getForwardP(), null);
+						mentionCount = edge.getForwardCount();
+					} else if (edge.getBackwardCount() > 0) {
+						distStr = getDistributionString(edge.getBackwardP(), null);
+						mentionCount = edge.getBackwardCount();
+					}
+					
+					thorough = thorough.append("<b>Mentions:</b> ").append(mentionCount).append("<br />");
+					thorough = thorough.append("<b>P:</b>").append("<br />");
+					thorough = thorough.append(distStr);
+					thorough = thorough.append("<br />");
+				}
+				
 				thorough = thorough.append("<b>Sources:</b> <br />");
 				List<CorpNetEdgeSource> sources = edge.getSources();
 				for (CorpNetEdgeSource source : sources) {

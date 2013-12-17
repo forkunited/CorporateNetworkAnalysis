@@ -222,15 +222,24 @@ public class VisualizeCorpNet {
 				thorough = thorough.append("<b>Tickers:</b> ").append(getListString(node.getMetaDataTickers())).append("<br />");
 				thorough = thorough.append("<b>Types:</b> ").append(getListString(node.getMetaDataTypes())).append("<br />");
 				thorough = thorough.append("<br />");
-				thorough = thorough.append("<b>In-P (Count):</b> ").append("<br />");
-				thorough = thorough.append(getDistributionString(node.getInP(), node.getInTypeCounts()));
-				thorough = thorough.append("<br />");
-				thorough = thorough.append("<b>Out-P (Count):</b> ");
-				thorough = thorough.append(getDistributionString(node.getOutP(), node.getOutTypeCounts()));
-				thorough = thorough.append("<br />");
-				thorough = thorough.append("<b>Self-P (Count):</b> ");
-				thorough = thorough.append(getDistributionString(node.getSelfP(), node.getSelfTypeCounts()));
-				thorough = thorough.append("<br />");
+				
+				if (node.getInCount() > 0) {
+					thorough = thorough.append("<b>In-P (Count):</b> ").append("<br />");
+					thorough = thorough.append(getDistributionString(node.getInP(), node.getInTypeCounts()));
+					thorough = thorough.append("<br />");
+				}
+				
+				if (node.getOutCount() > 0) {
+					thorough = thorough.append("<b>Out-P (Count):</b> ");
+					thorough = thorough.append(getDistributionString(node.getOutP(), node.getOutTypeCounts()));
+					thorough = thorough.append("<br />");
+				}
+				
+				if (node.getSelfCount() > 0) {
+					thorough = thorough.append("<b>Self-P (Count):</b> ");
+					thorough = thorough.append(getDistributionString(node.getSelfP(), node.getSelfTypeCounts()));
+					thorough = thorough.append("<br />");
+				}
 				
 				JSONObject nodeMessage = createNodeMessage(nodesToTagIds.get(nodeName) + "_0", nodesToTagIds.get(nodeName), nodeName, thorough.toString());
 				messages.add(nodeMessage);

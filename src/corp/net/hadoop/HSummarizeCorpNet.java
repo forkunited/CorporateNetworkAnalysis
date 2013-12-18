@@ -49,6 +49,8 @@ public class HSummarizeCorpNet {
 		filters.add(new CorpNetFilterNet("2008"));
 		filters.add(new CorpNetFilterNet("2009"));
 		filters.add(new CorpNetFilterNet("2010"));
+		filters.add(new CorpNetFilterNet("2011"));
+		filters.add(new CorpNetFilterNet("2012"));
 		
 		return filters;
 	}

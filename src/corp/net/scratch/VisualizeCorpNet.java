@@ -77,6 +77,10 @@ public class VisualizeCorpNet {
 			return;
 		}
 		
+		if (args.length > 2) {
+			VISUALIZE_URL = args[2];
+		}
+		
 		File[] networkDirs = inputDir.listFiles();
 		for (File networkDir : networkDirs) {
 			if (!networkDir.isDirectory())

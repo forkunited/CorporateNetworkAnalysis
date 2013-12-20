@@ -151,7 +151,6 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
-					break; // DEBUG
 				}
 			}
 			
@@ -259,7 +258,6 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();		
-					break; //DEBUG
 				}
 			
 			}
@@ -469,6 +467,7 @@ public class VisualizeCorpNet {
 		    	
 		    	return responseMessages;
 		    } else {
+		    	System.out.println(messages.toString());
 		    	System.out.println("Error: HTTP Request failed with error status " + status + ".");
 		    	return null;
 		    }

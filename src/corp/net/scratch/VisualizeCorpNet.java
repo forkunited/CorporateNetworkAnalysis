@@ -151,7 +151,7 @@ public class VisualizeCorpNet {
 					}
 					
 					messages = new JSONArray();
-	
+					break; // DEBUG
 				}
 			}
 			
@@ -258,7 +258,8 @@ public class VisualizeCorpNet {
 						nodesToNodeIds.put(messages.getJSONObject(i).getJSONObject("node").getString("brief"), responses.getJSONObject(i).getString("id"));
 					}
 					
-					messages = new JSONArray();
+					messages = new JSONArray();		
+					break; //DEBUG
 				}
 			
 			}

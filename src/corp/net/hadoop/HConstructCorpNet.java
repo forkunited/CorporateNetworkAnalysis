@@ -70,6 +70,9 @@ public class HConstructCorpNet {
 				int dateStartIndex = annotationFile.indexOf("-8-K-") + 5;
 				String year = annotationFile.substring(dateStartIndex, dateStartIndex+4);
 				
+				if (mention.trim().length() == 0 || author.trim().length() == 0)
+					return;
+				
 				// Undirected edge id
 				String edgeId = null;
 				JSONObject edgeValue = new JSONObject();

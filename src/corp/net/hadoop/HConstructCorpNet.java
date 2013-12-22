@@ -41,114 +41,104 @@ public class HConstructCorpNet {
 		private StringUtil.StringTransform stopWordCleanFn = StringUtil.getStopWordsCleanFn(this.stopWordGazetteer);
 		private CorpKeyFn corpKeyFn = null; 
 	
-		/*
-		 * Skip badly gzip'd files
-		 */
-		public void run(Context context) throws InterruptedException {
-			try {
-				List<Gazetteer> corpKeyFnKeyMaps = new ArrayList<Gazetteer>();
-				corpKeyFnKeyMaps.add(this.bloombergCorpTickerGazetteer);
-				corpKeyFnKeyMaps.add(this.nonCorpInitialismGazetteer);
-				this.corpKeyFn = new CorpKeyFn(corpKeyFnKeyMaps, this.stopWordCleanFn);
-				
-				setup(context);
-				while (context.nextKeyValue()) {
-					map(context.getCurrentKey(), context.getCurrentValue(),
-							context);
-				}
-				cleanup(context);
-			} catch (Exception e) {
-				e.printStackTrace();
+
+		public void run(Context context) throws InterruptedException, IOException {
+			List<Gazetteer> corpKeyFnKeyMaps = new ArrayList<Gazetteer>();
+			corpKeyFnKeyMaps.add(this.bloombergCorpTickerGazetteer);
+			corpKeyFnKeyMaps.add(this.nonCorpInitialismGazetteer);
+			this.corpKeyFn = new CorpKeyFn(corpKeyFnKeyMaps, this.stopWordCleanFn);
+			
+			setup(context);
+			while (context.nextKeyValue()) {
+				map(context.getCurrentKey(), context.getCurrentValue(),
+						context);
 			}
+			cleanup(context);
 		}
 
-		public void map(Object key, Text value, Context context) {
-			try {
-				JSONObject relationObj = JSONObject.fromObject(value.toString());
-				if (relationObj != null) {
-					JSONArray mentions = relationObj.getJSONArray("mentions");
-					if (mentions.size() == 0) {
-						throw new IllegalArgumentException("Relation object missing mentions...");
-					}
-					
-					String mention = this.corpKeyFn.transform(mentions.getJSONObject(0).getString("text"));
-					String author = this.corpKeyFn.transform(relationObj.getString("author"));
-					String annotationFile = relationObj.getString("annotationFile");
-					int dateStartIndex = annotationFile.indexOf("-8-K-") + 5;
-					String year = annotationFile.substring(dateStartIndex, dateStartIndex+4);
-					
-					// Undirected edge id
-					String edgeId = null;
-					JSONObject edgeValue = new JSONObject();
-					edgeValue.put("source", relationObj);
-					
-					if (mention.compareTo(author) < 0) {
-						edgeId = "EDGE." + mention + "." + author;
-						edgeValue.put("direction", "BACKWARD");
-					} else {
-						edgeId = "EDGE." + author + "." + mention;
-						edgeValue.put("direction", "FORWARD");
-					}
-					String yearEdgeId = year + "." + edgeId;
-					String fullEdgeId = "FULL." + edgeId;
-					
-					this.netObj.set(edgeValue.toString());
-					this.netObjId.set(yearEdgeId);
-					context.write(this.netObjId, this.netObj);
-					this.netObjId.set(fullEdgeId);
-					context.write(this.netObjId, this.netObj);
-					
-					// Set output object to author value
-					JSONObject authorValue = new JSONObject();
-					authorValue.put("source", relationObj);
-					authorValue.put("isAuthor", true);
-					authorValue.put("isSelf", author.equals(mention));
-					this.netObj.set(authorValue.toString());
-					
-					// Author id
-					String authorId = "NODE." + author;
-					String yearAuthorId = year + "." + authorId;
-					String fullAuthorId = "FULL." + authorId;
-					
-					this.netObjId.set(yearAuthorId);
-					context.write(this.netObjId, this.netObj);
-					this.netObjId.set(fullAuthorId);
-					context.write(this.netObjId, this.netObj);
-					
-					// Mention id
-					if (!author.equals(mention)) {
-						// Set output object to mention value
-						JSONObject mentionValue = new JSONObject();
-						mentionValue.put("source", relationObj);
-						mentionValue.put("isAuthor", false);
-						mentionValue.put("isSelf", false);
-						this.netObj.set(mentionValue.toString());
-						
-						String mentionId = "NODE." + mention;
-						String yearMentionId = year + "." + mentionId;
-						String fullMentionId = "FULL." + mentionId;
-						
-						this.netObjId.set(yearMentionId);
-						context.write(this.netObjId, this.netObj);
-						this.netObjId.set(fullMentionId);
-						context.write(this.netObjId, this.netObj);
-					}
-					
-					// Setup document id
-					this.netObj.set(value);
-					String documentId = "DOC." + annotationFile.split("\\.")[0];
-					String yearDocumentId = year + "." + documentId;
-					String fullDocumentId = "FULL." + documentId;
-					
-					this.netObjId.set(yearDocumentId);
-					context.write(this.netObjId, this.netObj);
-					this.netObjId.set(fullDocumentId);
-					context.write(this.netObjId, this.netObj);
-				} else {
-					throw new IllegalArgumentException("Invalid relation object.");
+		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+			JSONObject relationObj = JSONObject.fromObject(value.toString());
+			if (relationObj != null) {
+				JSONArray mentions = relationObj.getJSONArray("mentions");
+				if (mentions.size() == 0) {
+					throw new IllegalArgumentException("Relation object missing mentions...");
 				}
-			} catch (Exception e1) {
-				e1.printStackTrace();
+				
+				String mention = this.corpKeyFn.transform(mentions.getJSONObject(0).getString("text"));
+				String author = this.corpKeyFn.transform(relationObj.getString("author"));
+				String annotationFile = relationObj.getString("annotationFile");
+				int dateStartIndex = annotationFile.indexOf("-8-K-") + 5;
+				String year = annotationFile.substring(dateStartIndex, dateStartIndex+4);
+				
+				// Undirected edge id
+				String edgeId = null;
+				JSONObject edgeValue = new JSONObject();
+				edgeValue.put("source", relationObj);
+				
+				if (mention.compareTo(author) < 0) {
+					edgeId = "EDGE." + mention + "." + author;
+					edgeValue.put("direction", "BACKWARD");
+				} else {
+					edgeId = "EDGE." + author + "." + mention;
+					edgeValue.put("direction", "FORWARD");
+				}
+				String yearEdgeId = year + "." + edgeId;
+				String fullEdgeId = "FULL." + edgeId;
+				
+				this.netObj.set(edgeValue.toString());
+				this.netObjId.set(yearEdgeId);
+				context.write(this.netObjId, this.netObj);
+				this.netObjId.set(fullEdgeId);
+				context.write(this.netObjId, this.netObj);
+				
+				// Set output object to author value
+				JSONObject authorValue = new JSONObject();
+				authorValue.put("source", relationObj);
+				authorValue.put("isAuthor", true);
+				authorValue.put("isSelf", author.equals(mention));
+				this.netObj.set(authorValue.toString());
+				
+				// Author id
+				String authorId = "NODE." + author;
+				String yearAuthorId = year + "." + authorId;
+				String fullAuthorId = "FULL." + authorId;
+				
+				this.netObjId.set(yearAuthorId);
+				context.write(this.netObjId, this.netObj);
+				this.netObjId.set(fullAuthorId);
+				context.write(this.netObjId, this.netObj);
+				
+				// Mention id
+				if (!author.equals(mention)) {
+					// Set output object to mention value
+					JSONObject mentionValue = new JSONObject();
+					mentionValue.put("source", relationObj);
+					mentionValue.put("isAuthor", false);
+					mentionValue.put("isSelf", false);
+					this.netObj.set(mentionValue.toString());
+					
+					String mentionId = "NODE." + mention;
+					String yearMentionId = year + "." + mentionId;
+					String fullMentionId = "FULL." + mentionId;
+					
+					this.netObjId.set(yearMentionId);
+					context.write(this.netObjId, this.netObj);
+					this.netObjId.set(fullMentionId);
+					context.write(this.netObjId, this.netObj);
+				}
+				
+				// Setup document id
+				this.netObj.set(value);
+				String documentId = "DOC." + annotationFile.split("\\.")[0];
+				String yearDocumentId = year + "." + documentId;
+				String fullDocumentId = "FULL." + documentId;
+				
+				this.netObjId.set(yearDocumentId);
+				context.write(this.netObjId, this.netObj);
+				this.netObjId.set(fullDocumentId);
+				context.write(this.netObjId, this.netObj);
+			} else {
+				throw new IllegalArgumentException("Invalid relation object.");
 			}
 		}
 	}

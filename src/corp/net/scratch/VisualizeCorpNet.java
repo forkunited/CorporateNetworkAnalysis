@@ -472,6 +472,7 @@ public class VisualizeCorpNet {
 		    	return null;
 		    }
 		} catch (Exception e) {
+			System.out.println(messages.toString());
 			System.out.println("Error: HTTP Request failed with exception: " + e.getMessage());
 			return null;
 		}

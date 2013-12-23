@@ -130,7 +130,10 @@ public class CorpNetEdgeSource {
 		
 		str = str.append("Sentences: ").append("<br />");
 		for (Entry<Integer, String> entry : annotatedSentences.entrySet()) {
-			str = str.append(entry.getValue()).append("<br />");
+			if (entry.getValue().length() > 3000)
+				str = str.append("(Ommitted long source sentence greater than 3000 characters)<br />");
+			else
+				str = str.append(entry.getValue()).append("<br />");
 		}
 		
 		return str.toString();

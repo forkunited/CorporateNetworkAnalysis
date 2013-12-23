@@ -384,7 +384,7 @@ public class VisualizeCorpNet {
 				}
 			}
 
-			if (messages.size() == MESSAGES_PER_BATCH) {
+			if (messages.size() > 0) {
 				System.out.println("Sending edge message batch for edges in " + networkName + ".");
 				JSONArray responses = sendRequest(networkName, messages);
 				if (responses == null)

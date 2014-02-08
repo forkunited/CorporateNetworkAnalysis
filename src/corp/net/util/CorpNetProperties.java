@@ -2,6 +2,13 @@ package corp.net.util;
 
 import ark.util.ARKProperties;
 
+/**
+ * CorpNetProperties reads in property values from a configuration file. 
+ * These are used throughout the rest of the code.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetProperties extends ARKProperties {
 	private String networkSourceDirPath;
 	private String networkDirPath;
@@ -14,7 +21,8 @@ public class CorpNetProperties extends ARKProperties {
 	private String stopWordGazetteerPath;
 	
 	public CorpNetProperties() {
-		// FIXME: Do this differently... environment variables...?
+		// FIXME: Do this differently... environment variables... Or for now just add
+		// your Hadoop cluster path to make it work in the bad way.
 		super(new String[] { "corpnet.properties", "/user/wmcdowell/sloan/Projects/CorporateNetworkAnalysis/corpnet.properties" } );
 
 		this.networkSourceDirPath = loadProperty("networkSourceDirPath");

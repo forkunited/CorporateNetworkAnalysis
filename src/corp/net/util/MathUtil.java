@@ -3,6 +3,13 @@ package corp.net.util;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * MathUtil provides miscellaneous utilities for manipulating distributions
+ * and histograms.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MathUtil {
 	public static void accumulateDistribution(Map<String, Double> distribution, Map<String, Double> delta) {
 		for (Entry<String, Double> entry : delta.entrySet()) {

@@ -25,6 +25,15 @@ import corp.net.CorpNetNode;
 import corp.net.util.CorpNetProperties;
 import corp.net.util.MathUtil;
 
+/**
+ * VisualizeCorpNet inserts the output of corp.net.scratch.SplitCorpNet into
+ * theCorporateMess visualization.  You should read over theCorporateMess 
+ * project documentation, and then the VisualizeCorpNet code will make some
+ * sense.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class VisualizeCorpNet {
 	private static String VISUALIZE_URL = "http://demo.ark.cs.cmu.edu/cre/server/storeMessGraph.php";
 	private static int MESSAGES_PER_BATCH = 100;

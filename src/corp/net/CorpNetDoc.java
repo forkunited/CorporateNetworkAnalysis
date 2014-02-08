@@ -7,6 +7,34 @@ import corp.net.util.JSONUtil;
 import corp.net.util.MathUtil;
 import net.sf.json.JSONObject;
 
+/**
+ * CorpNetDoc represents a press release from which the corporate network is 
+ * constructed.  Instantiations of this class are first constructed by 
+ * corp.net.hadoop.HConstructCorpNet, serialized as JSON objects, and then 
+ * deserialized by other classes.  The JSON object representing a CorpNetDoc
+ * has the form:
+ * 
+ * {
+ *  "typeCounts": {
+ *    			   "<Relationship type>": <Number of mentions>,
+ *    			   <...>
+ *  },
+ *  "mentionCount": <Number of mentions in document>,
+ *  "p": {
+ *        "<Relationship type>": <Expected number of mentions>,
+ *        <...>
+ *  }
+ * }
+ *
+ * Note that each 'mention' in the mention counts consist of all occurrences 
+ * of one (cleaned) organization name within a single document--there is a 
+ * single mention for each posterior distribution output by 
+ * corp.scratch.RunModelTree from the CorporateRelationExtraction project.  
+ * See that class for more details.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetDoc extends CorpNetObject {
 	private String document;
 	

@@ -2,6 +2,27 @@ package corp.net.summary;
 
 import corp.net.CorpNetObject;
 
+/**
+ * CorpNetSummaryEntry is used by the corp.net.hadoop classes to represent 
+ * and (de-)serialize network summary filtered measure values and 
+ * aggregations.  An entry is represented by a key of the form:
+ * 
+ * (AGG/<Agg Type>.)?<Filter>.<Measure>.<Object type>/<Measure sub-type>?//<Object ID>?
+ * 
+ * Paired with an integer value computed for the measure or aggregate 
+ * described by the key.  The <Filter> and <Measure> describe what was 
+ * computed, and the <Object type> indicates whether the measure was 
+ * computed on nodes, edges, or documents from the network.  The other 
+ * components of the key are optional.  If (AGG/<Agg Type>.) is present,
+ * it indicates the aggregation (sum, count, or histogram) computed by 
+ * corp.net.hadoop.HAggregateCorpNetSummary.  <Object ID> 
+ * gives the id of the node, edge, or document for which the measure is 
+ * computed by corp.net.hadoop.HSummarizeCorpNet, or it gives a value 
+ * within a histogram output by HAggregateCorpNetSummary.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetSummaryEntry {
 	public enum AggregationType {
 		SUM,

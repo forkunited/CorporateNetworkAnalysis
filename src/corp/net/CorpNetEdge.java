@@ -11,6 +11,43 @@ import corp.net.util.MathUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+/**
+ * CorpNetEdge represents edges in the corporate network, where each edge is
+ * constructed from several organizations mentions. Instantiations of this 
+ * class are first constructed by corp.net.hadoop.HConstructCorpNet, serialized
+ * as JSON objects, and then deserialized by other classes that process the 
+ * network.  The JSON object representing a CorpNetEdge between CorpNetNode n1 
+ * and CorpNetNode n2 has the form:
+ *
+ * {
+ *  "forward": {
+ *   "p": {
+ *         <Relationship type>: <Expected number of mentions by n1 of n2>,
+ *         <...>
+ *   },
+ *   "count": <Number of mentions by n1 of n2>
+ *  },
+ *  "backward": {
+ *   "p": {
+ *         <Relationship type>: <Expected number of mentions by n2 of n1>,
+ *         <...>
+ *   },
+ *   "count": <Number of mentions of n2 by n1>
+ *  }
+ * }
+ * 
+ * The JSON object represents both the edge from n1 to n2 (forward), and the
+ * the edge from n2 to n1 (backward).
+ * 
+ * Note that each 'mention' in the mention counts consist of all occurrences 
+ * of one (cleaned) organization name within a single document--there is a 
+ * single mention for each posterior distribution output by 
+ * corp.scratch.RunModelTree from the CorporateRelationExtraction project.  
+ * See that class for more details.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetEdge extends CorpNetObject {
 	private String node1;
 	private String node2;

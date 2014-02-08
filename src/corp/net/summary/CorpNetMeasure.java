@@ -9,6 +9,19 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
+/**
+ * 
+ * Extensions of CorpNetMeasure represent summary measures for the 
+ * corporate network (currently used by 
+ * corp.net.hadoop.HSummarizeCorpNet).  A measure takes network
+ * objects (node, edge, or document), and returns CorpNetSummaryEntry 
+ * keys mapped to values.  All currently implemented measures return
+ * an entry with a value on each network object for each measure
+ * sub-type.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public abstract class CorpNetMeasure {
 	public List<CorpNetSummaryEntry> map(CorpNetSummaryEntry sourceEntry, CorpNetObject obj) {
 		if (obj.getType().equals(CorpNetObject.Type.DOC)) {

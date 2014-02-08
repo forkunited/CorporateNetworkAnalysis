@@ -8,6 +8,19 @@ import corp.net.CorpNetObject;
 import corp.net.util.CorpNetProperties;
 import ark.util.FileUtil;
 
+/**
+ * SplitCorpNet takes the bulk output from corp.net.hadoop.HConstructCorpNet,
+ * and splits it into a sub-directories containing files for each network.
+ * Every network N (for each year, FULL, etc) gets its own sub-directory
+ * of the same name containing the following files:
+ * 
+ * <N>/DOC (Document lines output by HConstructCorpNet)
+ * <N>/NODE (Node lines output by HConstructCorpNet)
+ * <N>/EDGE (Edge lines output by HConstructCorpNet)
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class SplitCorpNet {
 	private static CorpNetProperties properties = new CorpNetProperties();
 	

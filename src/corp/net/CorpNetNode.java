@@ -12,6 +12,75 @@ import corp.net.util.MathUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+/**
+ * CorpNetNode represents a node in the corporate network. Instantiations of 
+ * this class are first constructed by corp.net.hadoop.HConstructCorpNet, 
+ * serialized as JSON objects, and then deserialized by other classes that 
+ * process the network. The JSON object representing a CorpNetNode has the
+ * form:
+ *
+ * {
+ *  "inCount": <Number of incoming mentions>,
+ *  "outCount": <Number of (non-self) outgoing mentions>,
+ *  "selfCount": <Number of self mentions>,
+ *  "inP": {
+ *          "<Relationship type>": <Expected number of incoming mentions>,
+ *          <...>
+ *         },
+ *   "outP": {
+ *            "<Relationship type>": <Expected number of outgoing mentions>,
+ *            <...>
+ *           },
+ *   "selfP": {
+ *             "<Relationship type>": <Expected number of self mentions>,
+ *             <...>  
+ *            },
+ *   "inTypeCounts": {
+ *                    "<Relationship type>": <Number of incoming mentions>,
+ *                    <...>
+ *                   },
+ *   "outTypeCounts": {
+ *                     "<Relationship type>": <Number of outgoing mentions>,
+ *                     <...>    
+ *                    },
+ *   "selfTypeCounts": {
+ *                      "<Relationship type>": <Number of self mentions>,
+ *                      <...>
+ *                     },
+ *   "metaData": {
+ *                "countries": ["<Country>", <...>],
+ *                "ciks": ["<CIK>", <...>],
+ *                "industries": ["<Industry>", <...>],
+ *                "sics": ["<SIC>", <...>],
+ *                "tickers": ["<Ticker>", <...>],
+ *                "types": ["<Type>", <...>]
+ *               }
+ * }
+ * 
+ * 'inCount', 'outCount', and 'selfCount' count the number of mentions (not 
+ * edges in, out, and self-referencing the node.  'inP', 'outP', and 'selfP'
+ * sum over the posterior distributions over relationship types for these 
+ * mentions.  'inTypeCount', 'outTypeCount', and 'selfTypeCount' count the
+ * number of mentions in which each relationship type has the maximum 
+ * posterior value.  Note that whether a mention is counted toward  'in', 
+ * 'out', or 'self' depends on whether the node represents the author or 
+ * mentioned organization in the mention, or both.  A node can represent
+ * both the author and the mentioned organization if the entity resolution
+ * function (see the Sloan tech report) maps both to the same entity. This
+ * has nothing to do with the posterior score for the 'Self-reference' label 
+ * from the relationship extraction model---a Self-reference relationship type 
+ * posterior value is output for all mentions regardless of whether they are 
+ * determined to be 'self' by the entity resolution function or not.
+ * 
+ * Note that each 'mention' in the mention counts consist of all occurrences 
+ * of one (cleaned) organization name within a single document--there is a 
+ * single mention for each posterior distribution output by 
+ * corp.scratch.RunModelTree from the CorporateRelationExtraction project.  
+ * See that class for more details.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetNode extends CorpNetObject {
 	private String node;
 	

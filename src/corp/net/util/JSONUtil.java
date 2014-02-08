@@ -7,6 +7,13 @@ import java.util.TreeMap;
 
 import net.sf.json.JSONObject;
 
+/**
+ * JSONUtil provides functions for converting JSON objects to and from other  
+ * data-structures.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class JSONUtil {
 	@SuppressWarnings("rawtypes")
 	public static Map<String, Double> objToDistribution(JSONObject obj) {

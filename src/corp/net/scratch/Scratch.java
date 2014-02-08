@@ -9,6 +9,12 @@ import corp.net.summary.CorpNetSummaryEntry;
 
 import ark.util.FileUtil;
 
+/**
+ * Scratch provides space for trying out temporary snippets of code.  This is
+ * useful for performing one-off tasks or briefly testing things out.
+ * 
+ * @author Bill McDowell
+ */
 public class Scratch {
 	public static void main(String args[]) throws IOException {
 		BufferedReader r = FileUtil.getFileReader("C:/Users/Bill/Documents/projects/NoahsARK/sloan/Data/Test/testNetworkData.txt");

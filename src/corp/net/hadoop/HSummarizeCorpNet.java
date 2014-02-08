@@ -27,6 +27,31 @@ import corp.net.summary.CorpNetMeasureMentionCount;
 import corp.net.summary.CorpNetMeasurePSum;
 import corp.net.summary.CorpNetSummaryEntry;
 
+/**
+ * HSummarizeCorpNet produces summary statistics for the network constructed 
+ * by corp.net.hadoop.HConstructCorpNet by running a set of filtered measures.
+ * "Filters" select a subset of lines produced HConstructCorpNet, and 
+ * "measures" compute measures on the selected sets.  For example, one filter
+ * selects all objects for the network representing the year 1994, and then
+ * one measure computes the in-degree (number of incoming edges) for each node
+ * amongst those selected objects.  Some measures actually compute several 
+ * values for several measure "sub-types".  For example, the in-degree 
+ * measure actually computes the number of incoming edges of each type in 
+ * addition to the total number of incoming edges, and each of these separate 
+ * values consists of a separate sub-type.
+ * 
+ * The filters and measures are represented by CorpNetFilter and 
+ * CorpNetMeasure child classes in the corp.net.summary package, and their 
+ * output is represented by corp.net.summary.CorpNetSummaryEntry.  In 
+ * general, each line of the output of HSummarizeCorpNet consists of a single 
+ * serialized CorpNetSummaryEntry, representing the value of a filtered 
+ * measure sub-type for a single object of the network. To get a better idea of
+ * what these lines of output look like, see the documentation for 
+ * CorpNetSummaryEntry.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class HSummarizeCorpNet {	
 	private static List<CorpNetFilter> initFilters() {
 		List<CorpNetFilter> filters = new ArrayList<CorpNetFilter>();

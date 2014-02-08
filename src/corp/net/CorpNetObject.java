@@ -1,5 +1,13 @@
 package corp.net;
 
+/**
+ * CorpNetObject represents nodes, edges, and document objects within the 
+ * corporate network.  The CorpNetDoc, CorpNetEdge, and CorpNetNode classes
+ * extend from this one.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public abstract class CorpNetObject {
 	public enum Type {
 		NODE,

@@ -14,6 +14,15 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.util.CorpNetProperties;
 
+/**
+ * 
+ * FormatORACorpNet converts the output of corp.net.scratch.SplitCorpNet
+ * to the format used by the ORA network analysis tool 
+ * (http://www.casos.cs.cmu.edu/projects/ora/).
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class FormatORACorpNet {	
 	public static void main(String[] args) {
 		CorpNetProperties properties = new CorpNetProperties();

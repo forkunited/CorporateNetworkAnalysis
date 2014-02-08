@@ -10,6 +10,15 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
+/**
+ * Extensions of CorpNetMeasureDegree compute the number of edges incident to
+ * each node that meet certain conditions.  For example, 
+ * corp.net.summary.CorpNetMeasureDegreeIn computes the number of edges that
+ * are directed toward each node.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public abstract class CorpNetMeasureDegree extends CorpNetMeasure {
 
 	@Override

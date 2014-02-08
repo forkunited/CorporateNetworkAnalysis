@@ -5,6 +5,16 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
+/**
+ * Extensions of CorpNetFilter represent filters for the corporate network 
+ * summary measurement computation (currently by 
+ * corp.net.hadoop.HSummarizeCorpNet).  The filters indicate whether or not
+ * a given network object should be included in the computation of a 
+ * summary measurement.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public abstract class CorpNetFilter {
 	public boolean filterObject(CorpNetObject obj) {
 		if (obj.getType().equals(CorpNetObject.Type.DOC)) {

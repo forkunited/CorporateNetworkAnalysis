@@ -7,6 +7,14 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetObject;
 import corp.net.util.MathUtil;
 
+/**
+ * CorpNetMeasureDegreeReturn computes total number of edges and the number of 
+ * edges of each type for which there is a return edge in the opposite 
+ * direction between two nodes.  Each relationship type is a measure sub-type.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetMeasureDegreeReturn extends CorpNetMeasureDegree {
 	public CorpNetMeasureDegreeReturn() {
 		

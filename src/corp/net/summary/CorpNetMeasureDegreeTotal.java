@@ -6,6 +6,13 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetObject;
 import corp.net.util.MathUtil;
 
+/**
+ * CorpNetMeasureDegreeTotal computes total number of edges and the number of 
+ * edges of each type.  Each relationship type is a measure sub-type.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetMeasureDegreeTotal extends CorpNetMeasureDegree {
 	public CorpNetMeasureDegreeTotal() {
 		

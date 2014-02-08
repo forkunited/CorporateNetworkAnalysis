@@ -12,6 +12,16 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
+/**
+ * CorpNetMeasureMentionCount counts the total number mentions--and the number
+ * of mentions of each type--in which each node and document in the network is 
+ * involved.  For documents, there are measure sub-types for each relationship
+ * type.  For nodes, there are measure sub-types for incoming, outgoing, and
+ * self-directed mentions of each relationship type.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetMeasureMentionCount extends CorpNetMeasure {
 	public CorpNetMeasureMentionCount() {
 		

@@ -12,6 +12,16 @@ import corp.net.CorpNetEdge;
 import corp.net.CorpNetNode;
 import corp.net.CorpNetObject;
 
+/**
+ * CorpNetMeasurePSum computes the sum of relationship type posteriors across
+ * all mentions in which each node and document in the network is involved.   
+ * For documents, there are measure sub-types for the sum of each relationship 
+ * type.  For nodes, there are measure sub-types for sums that include 
+ * incoming, out-going, and self-directed mentions of each relationship type.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetMeasurePSum  extends CorpNetMeasure {
 	public CorpNetMeasurePSum() {
 		

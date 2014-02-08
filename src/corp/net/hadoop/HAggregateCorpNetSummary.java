@@ -15,6 +15,28 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 import corp.net.summary.CorpNetSummaryEntry;
 
+/**
+ * HAggregateCorpNetSummary aggregates the values output by 
+ * corp.net.hadoop.HSummarizeCorpNet into histograms, counts and sums for 
+ * each filtered measure sub-type. Each line of output is of the
+ * form:
+ * 
+ * <CorpnetSummaryEntry aggregate key>	<Value>
+ * 
+ * Where the aggregate key describes the filtered measure-subtype and
+ * the aggregation, and the value is the value for that aggregation for the
+ * measure. There is a separate aggregate key-value pair for each entry in a 
+ * histogram of a measure, but there is only one aggregate key-value for a 
+ * measure's count and one aggregate key-value for a measure's sum.  See
+ * corp.net.summary.CorpNetSummaryEntry for more details on the key.
+ * 
+ * You can easily compute the mean for a measure by the output sum divided 
+ * by count, and also normalize the histogram using count, but there 
+ * currently isn't any code to do this automatically.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class HAggregateCorpNetSummary {	
 	public static class HAggregateCorpNetSummaryMapper extends Mapper<Object, Text, Text, DoubleWritable> {
 		private Text key = new Text();

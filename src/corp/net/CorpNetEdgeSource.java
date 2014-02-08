@@ -15,6 +15,19 @@ import corp.net.util.JSONUtil;
 import corp.net.util.MathUtil;
 import edu.stanford.nlp.util.Pair;
 
+/**
+ * CorpNetEdgeSource represents an organization mention and its relationship-
+ * type distribution from which the corporate network is constructed. These 
+ * sources are output by corp.scratch.RunModelTree from the
+ * CorporateRelationExtraction project. Note that each 'mention' represented
+ * by this class consists of all occurrences of one (cleaned) organization 
+ * name within a single document--there is a single mention for each
+ * posterior distribution output by corp.scratch.RunModelTree.  See that class 
+ * for more details.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class CorpNetEdgeSource {
 	private JSONObject obj;
 	

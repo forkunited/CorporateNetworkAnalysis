@@ -19,6 +19,40 @@ import corp.net.util.CorpNetProperties;
 import corp.net.util.JSONUtil;
 import edu.stanford.nlp.util.Pair;
 
+/**
+ * SplitCorpNetSummary takes the bulk output from 
+ * corp.net.hadoop.HAggregateCorpNetSummary and 
+ * corp.net.hadoop.HRotateCorpNetSummary, and splits it into sub-directories 
+ * containing files for each network, measure and aggregation.
+ *
+ * For HRotationCorpNetSummary, there are sub-directories and files with 
+ * names of the form:
+ * 
+ * <N>/<Measure type>/<Object type>
+ * <N>/<Measure type>/<Object type>_MeasureSubTypes
+ * 
+ * The "<N>/<Measure type>/<Object type>" file contains measure values 
+ * computed for the given object type in a tabular format.  Each row of
+ * the table represents a single object, the first column gives the ID
+ * of the object, and the remaining columns give the values for the measure
+ * sub-types.  The order of the measure-sub-type columns is given in 
+ * "<N>/<Measure type>/<Object type>_MeasureSubTypes".  These were output
+ * as separate files to save computation time, but it would be easy to 
+ * add a couple lines of code to join these together in the future (TODO).
+ * 
+ * For HAggregateCorpNetSummary, there are sub-directories and files with
+ * names of the form:
+ * 
+ * <N>/<Measure type>/<Object type>_<Aggregation type>(_<Measure sub-type>)?
+ * 
+ * Each of these files contains the values for the sum, count, and histogram
+ * aggregation computed over the measures.  All measure sub-types are given
+ * in the same file for sum and count aggregations, but across separate
+ * files for the histograms for the sake of readability.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class SplitCorpNetSummary {
 	private static CorpNetProperties properties = new CorpNetProperties();
 	

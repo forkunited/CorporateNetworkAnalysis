@@ -58,7 +58,7 @@ import net.sf.json.JSONObject;
  * }
  * 
  * 'inCount', 'outCount', and 'selfCount' count the number of mentions (not 
- * edges in, out, and self-referencing the node.  'inP', 'outP', and 'selfP'
+ * edges) in, out, and self-referencing the node.  'inP', 'outP', and 'selfP'
  * sum over the posterior distributions over relationship types for these 
  * mentions.  'inTypeCount', 'outTypeCount', and 'selfTypeCount' count the
  * number of mentions in which each relationship type has the maximum 

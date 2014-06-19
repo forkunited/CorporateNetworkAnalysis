@@ -1,6 +1,6 @@
 package corp.net.util;
 
-import ark.util.ARKProperties;
+import ark.util.Properties;
 
 /**
  * CorpNetProperties reads in property values from a configuration file. 
@@ -9,7 +9,7 @@ import ark.util.ARKProperties;
  * @author Bill McDowell
  *
  */
-public class CorpNetProperties extends ARKProperties {
+public class CorpNetProperties extends Properties {
 	private String networkSourceDirPath;
 	private String networkDirPath;
 	private String corpMetaDataPath;

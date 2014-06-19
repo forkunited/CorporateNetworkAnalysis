@@ -25,8 +25,8 @@ import corp.net.CorpNetNode;
 import corp.net.util.CorpNetProperties;
 import corp.util.CorpKeyFn;
 
-import ark.data.Gazetteer;
-import ark.util.StringUtil;
+import corp.data.Gazetteer;
+import corp.util.StringUtil;
 
 /**
  * HConstructCorpNet constructs document, node, and edge objects for the
